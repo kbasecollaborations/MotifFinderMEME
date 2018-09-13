@@ -1,0 +1,60 @@
+#
+# define display information
+#
+name: Identify Promoter
+
+tooltip: |
+    Identify promoters given a genome and length to search over
+
+screenshots: []
+
+icon: null
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    genome_ref :
+        ui-name : |
+            Genome
+        short-hint : |
+            The genome to evaluate
+    featureSet_ref :
+        ui-name : |
+            Feature Set
+        short-hint : |
+            features
+    promoter_length :
+        ui-name : |
+            Promoter length
+        short-hint : |
+            Length to search over
+    motif_min_length :
+        ui-name : |
+            Minimum motif length
+        short-hint : |
+            Minimum length of motif to search for
+    motif_max_length :
+        ui-name : |
+            Maximum motif length
+        short-hint : |
+            Maximum length of motif to search for
+
+
+description : |
+    <p>Method to find promoters.</p>
