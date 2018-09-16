@@ -1,10 +1,10 @@
 #
 # define display information
 #
-name: Identify Promoter
+name: Motif Finder MEME
 
 tooltip: |
-    Identify promoters given a genome and length to search over
+    Use the MEME motif finding tool to discover sequence motifs upsteam of a specified gene list.
 
 screenshots: []
 
