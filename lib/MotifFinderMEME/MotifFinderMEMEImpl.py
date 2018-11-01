@@ -7,6 +7,7 @@ from pprint import pprint, pformat
 from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
 from KBaseReport.KBaseReportClient import KBaseReport
 from DataFileUtil.DataFileUtilClient import DataFileUtil
+from SequenceSetUtils.SequenceSetUtilsClient import SequenceSetUtils
 import subprocess
 import os
 import re
@@ -266,7 +267,7 @@ function openReport(evt, reportName) {
         # return the results
         return [output]
 
-    def get_promoter_for_gene(self, ctx, params):
+    def ExtractPromotersFromFeatureSetandDiscoverMotifs(self, ctx, params):
         """
         :param params: instance of type "get_promoter_for_gene_input" (Genome
            is a KBase genome Featureset is a KBase featureset Promoter_length

@@ -74,7 +74,7 @@
         "service-mapping": {
             "url": "",
             "name": "MotifFinderMEME",
-            "method": "find_motifs",
+            "method": "ExtractPromotersFromFeatureSetandDiscoverMotifs",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
