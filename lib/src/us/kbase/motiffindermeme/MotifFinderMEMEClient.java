@@ -11,6 +11,7 @@ import us.kbase.auth.AuthToken;
 import us.kbase.common.service.JsonClientCaller;
 import us.kbase.common.service.JsonClientException;
 import us.kbase.common.service.RpcContext;
+import us.kbase.common.service.UnauthorizedException;
 
 /**
  * <p>Original spec-file module name: MotifFinderMEME</p>
@@ -28,6 +29,49 @@ public class MotifFinderMEMEClient {
      */
     public MotifFinderMEMEClient(URL url) {
         caller = new JsonClientCaller(url);
+    }
+    /** Constructs a client with a custom URL.
+     * @param url the URL of the service.
+     * @param token the user's authorization token.
+     * @throws UnauthorizedException if the token is not valid.
+     * @throws IOException if an IOException occurs when checking the token's
+     * validity.
+     */
+    public MotifFinderMEMEClient(URL url, AuthToken token) throws UnauthorizedException, IOException {
+        caller = new JsonClientCaller(url, token);
+    }
+
+    /** Constructs a client with a custom URL.
+     * @param url the URL of the service.
+     * @param user the user name.
+     * @param password the password for the user name.
+     * @throws UnauthorizedException if the credentials are not valid.
+     * @throws IOException if an IOException occurs when checking the user's
+     * credentials.
+     */
+    public MotifFinderMEMEClient(URL url, String user, String password) throws UnauthorizedException, IOException {
+        caller = new JsonClientCaller(url, user, password);
+    }
+
+    /** Constructs a client with a custom URL
+     * and a custom authorization service URL.
+     * @param url the URL of the service.
+     * @param user the user name.
+     * @param password the password for the user name.
+     * @param auth the URL of the authorization server.
+     * @throws UnauthorizedException if the credentials are not valid.
+     * @throws IOException if an IOException occurs when checking the user's
+     * credentials.
+     */
+    public MotifFinderMEMEClient(URL url, String user, String password, URL auth) throws UnauthorizedException, IOException {
+        caller = new JsonClientCaller(url, user, password, auth);
+    }
+
+    /** Get the token this client uses to communicate with the server.
+     * @return the authorization token.
+     */
+    public AuthToken getToken() {
+        return caller.getToken();
     }
 
     /** Get the URL of the service with which this client communicates.
@@ -116,6 +160,57 @@ public class MotifFinderMEMEClient {
 
     public void setServiceVersion(String newValue) {
         this.serviceVersion = newValue;
+    }
+
+    /**
+     * <p>Original spec-file function name: find_motifs</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.motiffindermeme.FindMotifsParams FindMotifsParams} (original type "find_motifs_params")
+     * @return   parameter "output" of type {@link us.kbase.motiffindermeme.ExtractOutputParams ExtractOutputParams} (original type "extract_output_params")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExtractOutputParams findMotifs(FindMotifsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExtractOutputParams>> retType = new TypeReference<List<ExtractOutputParams>>() {};
+        List<ExtractOutputParams> res = caller.jsonrpcCall("MotifFinderMEME.find_motifs", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: ExtractPromotersFromFeatureSetandDiscoverMotifs</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.motiffindermeme.ExtractInput ExtractInput} (original type "extract_input")
+     * @return   parameter "output" of type {@link us.kbase.motiffindermeme.ExtractOutputParams ExtractOutputParams} (original type "extract_output_params")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExtractOutputParams extractPromotersFromFeatureSetandDiscoverMotifs(ExtractInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExtractOutputParams>> retType = new TypeReference<List<ExtractOutputParams>>() {};
+        List<ExtractOutputParams> res = caller.jsonrpcCall("MotifFinderMEME.ExtractPromotersFromFeatureSetandDiscoverMotifs", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: BuildFastaFromSequenceSet</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.motiffindermeme.BuildSeqIn BuildSeqIn}
+     * @return   parameter "output" of type {@link us.kbase.motiffindermeme.BuildSeqOut BuildSeqOut}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public BuildSeqOut buildFastaFromSequenceSet(BuildSeqIn params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<BuildSeqOut>> retType = new TypeReference<List<BuildSeqOut>>() {};
+        List<BuildSeqOut> res = caller.jsonrpcCall("MotifFinderMEME.BuildFastaFromSequenceSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
     }
 
     public Map<String, Object> status(RpcContext... jsonRpcContext) throws IOException, JsonClientException {

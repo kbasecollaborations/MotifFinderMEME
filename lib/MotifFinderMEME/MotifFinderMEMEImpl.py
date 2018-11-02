@@ -8,6 +8,7 @@ from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
 from KBaseReport.KBaseReportClient import KBaseReport
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from SequenceSetUtils.SequenceSetUtilsClient import SequenceSetUtils
+from MotifUtils.MotifUtilsClient import MotifUtils
 import subprocess
 import os
 import re
@@ -16,6 +17,7 @@ from datetime import datetime
 import uuid
 import MotifFinderMEME.Utils.MotifSetUtil as MSU
 import MotifFinderMEME.Utils.MemeUtil as MEU
+from MotifFinderMEME.Utils.makeReportFromMotifSet import buildReportFromMotifSet
 #from identify_promoter.Utils.ParsePromFile import makePromHTMLReports
 import subprocess
 from biokbase.workspace.client import Workspace
@@ -38,8 +40,8 @@ class MotifFinderMEME:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = ""
-    GIT_COMMIT_HASH = ""
+    GIT_URL = "git@github.com:arwyer/MotifFinderMEME.git"
+    GIT_COMMIT_HASH = "48272412c31d6c453fe894a6047de604cca3f7ea"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -52,37 +54,52 @@ class MotifFinderMEME:
         self.shared_folder = config['scratch']
         #END_CONSTRUCTOR
         pass
+
+
     def find_motifs(self, ctx, params):
         """
-        :param params: instance of type "get_promoter_for_gene_input" (Genome
-           is a KBase genome Featureset is a KBase featureset Promoter_length
-           is the length of promoter requested for all genes) -> structure:
-           parameter "workspace_name" of String, parameter "genome_ref" of
-           String, parameter "featureSet_ref" of String, parameter
-           "promoter_length" of Long
-        :returns: instance of type "get_promoter_for_gene_output_params" ->
-           structure: parameter "report_name" of String, parameter
-           "report_ref" of String
+        :param params: instance of type "find_motifs_params" (Genome is a
+           KBase genome Featureset is a KBase featureset Promoter_length is
+           the length of promoter requested for all genes) -> structure:
+           parameter "workspace_name" of String, parameter "SequenceSetRef"
+           of String, parameter "motif_min_length" of Long, parameter
+           "motif_max_length" of Long
+        :returns: instance of type "extract_output_params" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
         """
         # ctx is the context object
         # return variables are: output
         #BEGIN find_motifs
 
-        #TODO: have these guys return output paths
-        for key, value in params.iteritems() :
-            print key
+        #TODO: Things to fix in here...
+        #      Use MotifUtils to parse output and create object
+        #      create new function for report ?
+
         if 'motif_min_length' not in params:
             params['motif_min_length'] = 8
         if 'motif_max_length' not in params:
             params['motif_max_length'] = 16
         motMin = params['motif_min_length']
         motMax = params['motif_max_length']
-        promoterFastaFilePath = self.get_promoter_for_gene(ctx,params)[0]
+
+        #promoterFastaFilePath = self.get_promoter_for_gene(ctx,params)[0]
+        promoterFastaFilePath = params['fastapath']
 
         MEMEMotifCommand = MEU.build_meme_command(promoterFastaFilePath)
         MEU.run_meme_command(MEMEMotifCommand)
+        meme_out_path = '/kb/module/work/tmp/meme_out/meme.txt'
+        meme_params = {'ws_name' : params['workspace_name'], 'path' : meme_out_path,'obj_name' : 'MEME_Motif_Set'}
+        MOU = MotifUtils(self.callback_url)
+        obj_ref = MOU.UploadFromMEME(meme_params)[0]['obj_ref']
+        #memeMotifList = MEU.parse_meme_output()
 
-        memeMotifList = MEU.parse_meme_output()
+        #HERE:
+        #we've got object ref
+        #we've got html building functions
+        #build report, setup return,
+        #make report and return it
+
+        #buildReportFromMotifSet()
 
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         timestamp = str(timestamp)
@@ -100,16 +117,21 @@ class MotifFinderMEME:
             promHTML.write(promHtmlStr)
         JsonPath = '/kb/module/work/tmp'
 
+        dfu = DataFileUtil(self.callback_url)
+        get_obj_params = {'object_refs' : [obj_ref]}
+        memeMotifSet = dfu.get_objects(get_obj_params)['data'][0]['data']
+        buildReportFromMotifSet(memeMotifSet,htmlDir,'MEME')
+
         #TODO: Here replace the makereport with a call to motifset utils
-        subprocess.call(['python','/kb/module/lib/identify_promoter/Utils/makeReport.py',JsonPath + '/meme_out/meme.json',htmlDir + '/meme.html',str(numFeat)])
-        fullMotifList = []
-        for m in memeMotifList:
-            fullMotifList.append(m)
+        #subprocess.call(['python','/kb/module/lib/identify_promoter/Utils/makeReport.py',JsonPath + '/meme_out/meme.json',htmlDir + '/meme.html',str(numFeat)])
+        #fullMotifList = []
+        #for m in memeMotifList:
+        #    fullMotifList.append(m)
 
 
         #What needs to happen here:
         #call makeLogo for each of the json outputs(capture these from somewhere)
-        dfu = DataFileUtil(self.callback_url)
+
         parsed = ['meme.html','promoters.html']
         indexHtmlStr = '<html>'
         #use js to load the page content
@@ -203,32 +225,32 @@ function openReport(evt, reportName) {
         #Create motif set object from MotifList
         #TODO set parameters correctly
         #add narrative support to set
-        MSO = {}
-        MSO['Condition'] = 'Temp'
-        MSO['FeatureSet_ref'] = '123'
-        MSO['Motifs'] = []
-        MSO['Alphabet'] = ['A','C','G','T']
-        MSO['Background'] = {}
-        for letter in MSO['Alphabet']:
-            MSO['Background'][letter] = 0.0
+        #MSO = {}
+        #MSO['Condition'] = 'Temp'
+        #MSO['FeatureSet_ref'] = '123'
+        #MSO['Motifs'] = []
+        #MSO['Alphabet'] = ['A','C','G','T']
+        #MSO['Background'] = {}
+        #for letter in MSO['Alphabet']:
+        #    MSO['Background'][letter] = 0.0
 
-        MSU.parseMotifList(fullMotifList,MSO)
-        objname = 'MotifSet' + str(int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000))
+        #MSU.parseMotifList(fullMotifList,MSO)
+        #objname = 'MotifSet' + str(int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000))
 
         #Pass motif set into this
-        save_objects_params = {}
+        #save_objects_params = {}
         #save_objects_params['id'] = self.ws_info[0]
         #save_objects_params['id'] = long(params['workspace_name'].split('_')[1])
-        save_objects_params['id'] = dfu.ws_name_to_id(params['workspace_name'])
-        save_objects_params['objects'] = [{'type': 'KBaseGwasData.MotifSet' , 'data' : MSO , 'name' : objname}]
+        #save_objects_params['id'] = dfu.ws_name_to_id(params['workspace_name'])
+        #save_objects_params['objects'] = [{'type': 'KBaseGwasData.MotifSet' , 'data' : MSO , 'name' : objname}]
 
-        info = dfu.save_objects(save_objects_params)[0]
-        motif_set_ref = "%s/%s/%s" % (info[6], info[0], info[4])
+        #info = dfu.save_objects(save_objects_params)[0]
+        #motif_set_ref = "%s/%s/%s" % (info[6], info[0], info[4])
         #object_upload_ret = dfu.file_to_shock()
 
-        reportName = 'identify_promoter_report_'+str(uuid.uuid4())
+        reportName = 'MEMEMotifFinder_report_'+str(uuid.uuid4())
 
-        reportObj = {'objects_created': [{'ref' : motif_set_ref, 'description' : 'Motif Set generated by identify promoter'}],
+        reportObj = {'objects_created': [{'ref' : obj_ref, 'description' : 'Motif Set generated by MEME'}],
                      'message': '',
                      'direct_html': None,
                      'direct_html_index': 0,
@@ -269,181 +291,79 @@ function openReport(evt, reportName) {
 
     def ExtractPromotersFromFeatureSetandDiscoverMotifs(self, ctx, params):
         """
-        :param params: instance of type "get_promoter_for_gene_input" (Genome
-           is a KBase genome Featureset is a KBase featureset Promoter_length
-           is the length of promoter requested for all genes) -> structure:
+        :param params: instance of type "extract_input" -> structure:
            parameter "workspace_name" of String, parameter "genome_ref" of
            String, parameter "featureSet_ref" of String, parameter
-           "promoter_length" of Long
-        :returns: instance of String
+           "promoter_length" of Long, parameter "motif_min_length" of Long,
+           parameter "motif_max_length" of Long
+        :returns: instance of type "extract_output_params" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
         """
         # ctx is the context object
         # return variables are: output
-        #BEGIN get_promoter_for_gene
-        #code goes here
-        dfu = DataFileUtil(self.callback_url)
-        #objectRefs = {'object_refs':[params['genome_ref'],params['featureSet_ref']]}
-        objectRefs = {'object_refs':[params['featureSet_ref']]}
-        ws = Workspace('https://appdev.kbase.us/services/ws')
-        ws_name = params['workspace_name']
-        subset = ws.get_object_subset([{
-                                     'included':['/features/[*]/location', '/features/[*]/id','/assembly_ref'],
-'ref':params['genome_ref']}])
-        features = subset[0]['data']['features']
-        aref = subset[0]['data']['assembly_ref']
-        objects = dfu.get_objects(objectRefs)
-        #genome = objects['data'][0]['data']
-        #featureSet = objects['data'][1]['data']
-        featureSet = objects['data'][0]['data']
-        assembly_ref = {'ref': aref}
-        #print assembly_ref
-        #with open(self.shared_folder + '/genome.json','w') as f:
-        #    json.dump(genome,f)
-        #with open(self.shared_folder + '/featureSet.json','w') as f:
-        #    json.dump(featureSet,f)
-        #with open('/kb/module/work/asssembly.json','w') as f:
-        #    json.dump(assembly,f)
-        print('Downloading Assembly data as a Fasta file.')
-        assemblyUtil = AssemblyUtil(self.callback_url)
-        fasta_file = assemblyUtil.get_assembly_as_fasta(assembly_ref)
+        #BEGIN ExtractPromotersFromFeatureSetandDiscoverMotifs
 
-        #pprint(fasta_file)
-        #loop over featureSet
-        #find matching feature in genome
-        #get record, start, orientation, length
-        #TODO: add some error checking logic to the bounds of the promoter
-        prom= ""
-        featureFound = False
-        for feature in featureSet['elements']:
-            #print(feature)
-            #print(featureSet['elements'][feature])
-            featureFound = False
-            for f in features:
-                #print f['id']
-                #print feature
-                if f['id'] == feature:
-                    attributes = f['location'][0]
-                    featureFound = True
-                    #print('found match ' + feature)
-                    #print(f['location'])
-                    break
-            if featureFound:
-                for record in SeqIO.parse(fasta_file['path'], 'fasta'):
-                #for record in SeqIO.parse('/kb/module/work/Gmax_189_genome_assembly.fa', 'fasta'):
-                #print(record.id)
-                #print(attributes[0])
-                    if record.id == attributes[0]:
-                        #print('adding to prom string')
-                    #print(attributes[0])
-                        if attributes[2] == '+':
-                            #print('1')
-                        #might need to offset by 1?
-                            end = attributes[1]
-                            start = end - params['promoter_length']
-                            if end < 0:
-                                end = 0
-                            promoter = record.seq[start:end].upper()
-                            #HERE: resolve ambiguous characters
-                            prom += ">" + feature + "\n"
-                            prom += promoter + "\n"
+        #Pseudo:
+        #build sequence with utils
+        #build fasta from sequence set
+        #run meme
+        #extract object with utils
+
+        SSU = SequenceSetUtils(self.callback_url)
+
+        BuildParams = {'ws_name' : params['workspace_name'], 'FeatureSet_ref' : params['featureSet_ref'], 'genome_ref' : params['genome_ref'], 'upstream_length' : params['promoter_length']}
+        SSref =  SSU.buildFromFeatureSet(BuildParams)[0]['SequenceSet_ref']
+        fastapath = '/kb/module/tmp/SeqSet.fa'
+        FastaParams = {'workspace_name' : params['workspace_name'] , 'SequenceSetRef' : SSref , 'fasta_outpath' : fastapath}
+        BuildFastaFromSequenceSet(ctx,params)
+
+        findmotifsparams= {'workspace_name' : params['workspace_name'],'fastapath':fastapath,'motif_min_length':params['motif_min_length'],'motif_max_length':params['motif_max_length']}
+
+        output = find_motifs(ctx,findmotifsparams)[0]
 
 
-                        elif attributes[2] == '-':
-                            #print('2')
-                            start = attributes[1]
-                            end = start + params['promoter_length']
-                            if end > len(record.seq) - 1:
-                                end = len(record.seq) - 1
-                            promoter = record.seq[start:end].upper()
-                            complement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A','N': 'N'}
-                            promoter = ''.join([complement[base] for base in promoter[::-1]])
-                            #HERE: resolve ambiguous characters
-                            prom += ">" + feature + "\n"
-                            prom += promoter + "\n"
-
-
-                        else:
-                            print('Error on orientation')
-            else:
-                print('Could not find feature ' + feature + 'in genome')
-        promOutputPath = '/kb/module/work/tmp/promFile.fa'
-        #print('prom string\n' + str(prom))
-        with open(promOutputPath,'w') as promFile:
-            promFile.write(str(prom))
-
-
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        html_output_dir = os.path.join(self.shared_folder,'output_html.'+str(timestamp))
-        if not os.path.exists(html_output_dir):
-            os.makedirs(html_output_dir)
-        html_file = 'promoter.html'
-        output_html_file_path = os.path.join(html_output_dir, html_file);
-
-
-        html_report_lines = '<html><body>'
-        html_report_lines += '<pre>' + prom + '</pre>'
-        html_report_lines += '</body></html>'
-
-        with open (output_html_file_path, 'w', 0) as html_handle:
-            html_handle.write(str(html_report_lines))
-
-        try:
-            html_upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
-            #html_upload_ret = dfu.file_to_shock({'file_path': output_html_file_path,
-                                                 #'make_handle': 0})
-                                                 'make_handle': 0,
-                                                 'pack': 'zip'})
-        except:
-            raise ValueError ('error uploading HTML file to shock')
-
-        reportName = 'identify_promoter_report_'+str(uuid.uuid4())
-
-        reportObj = {'objects_created': [],
-                     'message': '',
-                     'direct_html': None,
-                     'direct_html_index': 0,
-                     'file_links': [],
-                     'html_links': [],
-                     'html_window_height': 220,
-                     'workspace_name': params['workspace_name'],
-                     'report_object_name': reportName
-                     }
-
-
-        # attach to report obj
-        #reportObj['direct_html'] = None
-        reportObj['direct_html'] = ''
-        reportObj['direct_html_link_index'] = 0
-        reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
-                                    'name': html_file,
-                                    'label': 'View'
-                                    }
-                                   ]
-
-        report = KBaseReport(self.callback_url, token=ctx['token'])
-        #report_info = report.create({'report':reportObj, 'workspace_name':input_params['input_ws']})
-        report_info = report.create_extended_report(reportObj)
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
-        #changing output to be path string
-        #TODO: get rid of this html maybe and move into find_motifs
-        output = promOutputPath
-
-        #iterate over records in fasta
-        #for record in SeqIO.parse(fasta_file['path'], 'fasta'):
-
-
-        #objects list of Genome and featureSet
-
-        #pprint(objects)
-        #END get_promoter_for_gene
+        #END ExtractPromotersFromFeatureSetandDiscoverMotifs
 
         # At some point might do deeper type checking...
-        if not isinstance(output, basestring):
-            raise ValueError('Method get_promoter_for_gene return value ' +
-                             'output is not type basestring as required.')
+        if not isinstance(output, dict):
+            raise ValueError('Method ExtractPromotersFromFeatureSetandDiscoverMotifs return value ' +
+                             'output is not type dict as required.')
         # return the results
         return [output]
 
+    def BuildFastaFromSequenceSet(self, ctx, params):
+        """
+        :param params: instance of type "BuildSeqIn" -> structure: parameter
+           "workspace_name" of String, parameter "SequenceSetRef" of String,
+           parameter "fasta_outpath" of String
+        :returns: instance of type "BuildSeqOut" -> structure: parameter
+           "fasta_outpath" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN BuildFastaFromSequenceSet
+        dfu = DataFileUtil(self.callback_url)
+        get_objects_params = {'object_refs' : [params['SequenceSetRef']]}
+        SeqSet = dfu.get_objects(get_objects_params)['data'][0]['data']
+
+        outFile = open(params['fasta_outpath'],'w')
+        for s in SeqSet['sequences']:
+            sname = '>' + s['sequence_id'] + '\n'
+            outFile.write(sname)
+            sseq = s['sequence'] + '\n'
+            outFile.write(sseq)
+        outFile.close()
+        output = {'fasta_outpath' : params['fasta_outpath']}
+
+
+        #END BuildFastaFromSequenceSet
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method BuildFastaFromSequenceSet return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

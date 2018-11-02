@@ -12,6 +12,7 @@ eval {
     $get_time = sub { Time::HiRes::gettimeofday() };
 };
 
+use Bio::KBase::AuthToken;
 
 # Client version should match Impl version
 # This is a Semantic Version number,
@@ -74,6 +75,27 @@ sub new
 	push(@{$self->{headers}}, 'Kbrpc-Errordest', $self->{kbrpc_error_dest});
     }
 
+    #
+    # This module requires authentication.
+    #
+    # We create an auth token, passing through the arguments that we were (hopefully) given.
+
+    {
+	my %arg_hash2 = @args;
+	if (exists $arg_hash2{"token"}) {
+	    $self->{token} = $arg_hash2{"token"};
+	} elsif (exists $arg_hash2{"user_id"}) {
+	    my $token = Bio::KBase::AuthToken->new(@args);
+	    if (!$token->error_message) {
+	        $self->{token} = $token->token;
+	    }
+	}
+	
+	if (exists $self->{token})
+	{
+	    $self->{client}->{token} = $self->{token};
+	}
+    }
 
     my $ua = $self->{client}->ua;	 
     my $timeout = $ENV{CDMI_TIMEOUT} || (30 * 60);	 
@@ -84,6 +106,300 @@ sub new
 }
 
 
+
+
+=head2 find_motifs
+
+  $output = $obj->find_motifs($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a MotifFinderMEME.find_motifs_params
+$output is a MotifFinderMEME.extract_output_params
+find_motifs_params is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	SequenceSetRef has a value which is a string
+	motif_min_length has a value which is an int
+	motif_max_length has a value which is an int
+extract_output_params is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a MotifFinderMEME.find_motifs_params
+$output is a MotifFinderMEME.extract_output_params
+find_motifs_params is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	SequenceSetRef has a value which is a string
+	motif_min_length has a value which is an int
+	motif_max_length has a value which is an int
+extract_output_params is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub find_motifs
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function find_motifs (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to find_motifs:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'find_motifs');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "MotifFinderMEME.find_motifs",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'find_motifs',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method find_motifs",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'find_motifs',
+				       );
+    }
+}
+ 
+
+
+=head2 ExtractPromotersFromFeatureSetandDiscoverMotifs
+
+  $output = $obj->ExtractPromotersFromFeatureSetandDiscoverMotifs($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a MotifFinderMEME.extract_input
+$output is a MotifFinderMEME.extract_output_params
+extract_input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	genome_ref has a value which is a string
+	featureSet_ref has a value which is a string
+	promoter_length has a value which is an int
+	motif_min_length has a value which is an int
+	motif_max_length has a value which is an int
+extract_output_params is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a MotifFinderMEME.extract_input
+$output is a MotifFinderMEME.extract_output_params
+extract_input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	genome_ref has a value which is a string
+	featureSet_ref has a value which is a string
+	promoter_length has a value which is an int
+	motif_min_length has a value which is an int
+	motif_max_length has a value which is an int
+extract_output_params is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub ExtractPromotersFromFeatureSetandDiscoverMotifs
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function ExtractPromotersFromFeatureSetandDiscoverMotifs (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to ExtractPromotersFromFeatureSetandDiscoverMotifs:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "MotifFinderMEME.ExtractPromotersFromFeatureSetandDiscoverMotifs",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method ExtractPromotersFromFeatureSetandDiscoverMotifs",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs',
+				       );
+    }
+}
+ 
+
+
+=head2 BuildFastaFromSequenceSet
+
+  $output = $obj->BuildFastaFromSequenceSet($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a MotifFinderMEME.BuildSeqIn
+$output is a MotifFinderMEME.BuildSeqOut
+BuildSeqIn is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	SequenceSetRef has a value which is a string
+	fasta_outpath has a value which is a string
+BuildSeqOut is a reference to a hash where the following keys are defined:
+	fasta_outpath has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a MotifFinderMEME.BuildSeqIn
+$output is a MotifFinderMEME.BuildSeqOut
+BuildSeqIn is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	SequenceSetRef has a value which is a string
+	fasta_outpath has a value which is a string
+BuildSeqOut is a reference to a hash where the following keys are defined:
+	fasta_outpath has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub BuildFastaFromSequenceSet
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function BuildFastaFromSequenceSet (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to BuildFastaFromSequenceSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'BuildFastaFromSequenceSet');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "MotifFinderMEME.BuildFastaFromSequenceSet",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'BuildFastaFromSequenceSet',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method BuildFastaFromSequenceSet",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'BuildFastaFromSequenceSet',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -119,7 +435,7 @@ sub status
 sub version {
     my ($self) = @_;
     my $result = $self->{client}->call($self->{url}, $self->{headers}, {
-        method => "${last_module.module_name}.version",
+        method => "MotifFinderMEME.version",
         params => [],
     });
     if ($result) {
@@ -127,16 +443,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => '${last_method.name}',
+                method_name => 'BuildFastaFromSequenceSet',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method ${last_method.name}",
+            error => "Error invoking method BuildFastaFromSequenceSet",
             status_line => $self->{client}->status_line,
-            method_name => '${last_method.name}',
+            method_name => 'BuildFastaFromSequenceSet',
         );
     }
 }
@@ -170,6 +486,185 @@ sub _validate_version {
 }
 
 =head1 TYPES
+
+
+
+=head2 find_motifs_params
+
+=over 4
+
+
+
+=item Description
+
+Genome is a KBase genome
+Featureset is a KBase featureset
+Promoter_length is the length of promoter requested for all genes
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+SequenceSetRef has a value which is a string
+motif_min_length has a value which is an int
+motif_max_length has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+SequenceSetRef has a value which is a string
+motif_min_length has a value which is an int
+motif_max_length has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 extract_input
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+genome_ref has a value which is a string
+featureSet_ref has a value which is a string
+promoter_length has a value which is an int
+motif_min_length has a value which is an int
+motif_max_length has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+genome_ref has a value which is a string
+featureSet_ref has a value which is a string
+promoter_length has a value which is an int
+motif_min_length has a value which is an int
+motif_max_length has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 extract_output_params
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 BuildSeqIn
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+SequenceSetRef has a value which is a string
+fasta_outpath has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+SequenceSetRef has a value which is a string
+fasta_outpath has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 BuildSeqOut
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+fasta_outpath has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+fasta_outpath has a value which is a string
+
+
+=end text
+
+=back
 
 
 

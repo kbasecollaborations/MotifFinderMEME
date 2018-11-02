@@ -14,7 +14,7 @@ module MotifFinderMEME {
 
       typedef structure{
         string workspace_name;
-        string SequenceSetRef;
+        string fastapath;
         int motif_min_length;
         int motif_max_length;
 
@@ -45,13 +45,13 @@ module MotifFinderMEME {
         string fasta_outpath;
       } BuildSeqOut;
 
-      funcdef find_motifs(get_promoter_for_gene_input params)
+      funcdef find_motifs(find_motifs_params params)
         returns (extract_output_params output) authentication required;
 
       funcdef ExtractPromotersFromFeatureSetandDiscoverMotifs(extract_input params)
         returns (extract_output_params output) authentication required;
 
       funcdef BuildFastaFromSequenceSet(BuildSeqIn params)
-        returns (BuildSeqOut output)
+        returns (BuildSeqOut output) authentication required;
 
 };
