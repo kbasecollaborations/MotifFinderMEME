@@ -1,6 +1,6 @@
 
 
-def buildReportFromMotifSet(MotifSet,htmlDir,imgStr)
+def buildReportFromMotifSet(MotifSet,htmlDir,imgStr):
     htmlReport = '<html><body>'
     htmlReport += '<table style="width:100%" border=1>\n' + '<tr>\n'
     #htmlReport += '<th> Sequence </th>\n' + '<th> Logo </th>\n' + '<th> Ratio </th>\n + </tr>\n'

@@ -312,10 +312,10 @@ function openReport(evt, reportName) {
         SSU = SequenceSetUtils(self.callback_url)
 
         BuildParams = {'ws_name' : params['workspace_name'], 'FeatureSet_ref' : params['featureSet_ref'], 'genome_ref' : params['genome_ref'], 'upstream_length' : params['promoter_length']}
-        SSref =  SSU.buildFromFeatureSet(BuildParams)[0]['SequenceSet_ref']
+        SSref =  SSU.buildFromFeatureSet(BuildParams)['SequenceSet_ref']
         fastapath = '/kb/module/tmp/SeqSet.fa'
         FastaParams = {'workspace_name' : params['workspace_name'] , 'SequenceSetRef' : SSref , 'fasta_outpath' : fastapath}
-        BuildFastaFromSequenceSet(ctx,params)
+        self.getImpl().BuildFastaFromSequenceSet(ctx,params)
 
         findmotifsparams= {'workspace_name' : params['workspace_name'],'fastapath':fastapath,'motif_min_length':params['motif_min_length'],'motif_max_length':params['motif_max_length']}
 

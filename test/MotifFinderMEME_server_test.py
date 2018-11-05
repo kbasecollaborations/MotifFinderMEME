@@ -98,6 +98,6 @@ class MotifFinderMEMETest(unittest.TestCase):
             'motif_max_length':16
         }
 
-        result = self.getImpl().find_motifs(self.getContext(),params)
+        result = self.getImpl().ExtractPromotersFromFeatureSetandDiscoverMotifs(self.getContext(),params)
         print('RESULT:')
         pprint(result)
