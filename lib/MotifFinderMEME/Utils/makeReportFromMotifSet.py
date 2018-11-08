@@ -1,4 +1,9 @@
-
+import json
+import sys
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from pyseqlogo.pyseqlogo import draw_logo, setup_axis
 
 def buildReportFromMotifSet(MotifSet,htmlDir,imgStr):
     htmlReport = '<html><body>'
@@ -41,7 +46,7 @@ def buildReportFromMotifSet(MotifSet,htmlDir,imgStr):
 
         locationString = ''
         for loc in motif['Motif_Locations']:
-            locationList = [loc['sequence_id'],loc['start'],loc['end'],loc['orientation']]
+            locationList = [loc['sequence_id'],str(loc['start']),str(loc['end']),loc['orientation']]
             locationString += ' '.join(locationList) + '<br />'
 
         htmlReport += '<td> '  + locationString + ' </td>\n'

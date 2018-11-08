@@ -180,23 +180,6 @@ public class MotifFinderMEMEClient {
     }
 
     /**
-     * <p>Original spec-file function name: ExtractPromotersFromFeatureSetandDiscoverMotifs</p>
-     * <pre>
-     * </pre>
-     * @param   params   instance of type {@link us.kbase.motiffindermeme.ExtractInput ExtractInput} (original type "extract_input")
-     * @return   parameter "output" of type {@link us.kbase.motiffindermeme.ExtractOutputParams ExtractOutputParams} (original type "extract_output_params")
-     * @throws IOException if an IO exception occurs
-     * @throws JsonClientException if a JSON RPC exception occurs
-     */
-    public ExtractOutputParams extractPromotersFromFeatureSetandDiscoverMotifs(ExtractInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
-        List<Object> args = new ArrayList<Object>();
-        args.add(params);
-        TypeReference<List<ExtractOutputParams>> retType = new TypeReference<List<ExtractOutputParams>>() {};
-        List<ExtractOutputParams> res = caller.jsonrpcCall("MotifFinderMEME.ExtractPromotersFromFeatureSetandDiscoverMotifs", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
-    }
-
-    /**
      * <p>Original spec-file function name: BuildFastaFromSequenceSet</p>
      * <pre>
      * </pre>
@@ -210,6 +193,23 @@ public class MotifFinderMEMEClient {
         args.add(params);
         TypeReference<List<BuildSeqOut>> retType = new TypeReference<List<BuildSeqOut>>() {};
         List<BuildSeqOut> res = caller.jsonrpcCall("MotifFinderMEME.BuildFastaFromSequenceSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: ExtractPromotersFromFeatureSetandDiscoverMotifs</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.motiffindermeme.ExtractInput ExtractInput} (original type "extract_input")
+     * @return   parameter "output" of type {@link us.kbase.motiffindermeme.ExtractOutputParams ExtractOutputParams} (original type "extract_output_params")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExtractOutputParams extractPromotersFromFeatureSetandDiscoverMotifs(ExtractInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExtractOutputParams>> retType = new TypeReference<List<ExtractOutputParams>>() {};
+        List<ExtractOutputParams> res = caller.jsonrpcCall("MotifFinderMEME.ExtractPromotersFromFeatureSetandDiscoverMotifs", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

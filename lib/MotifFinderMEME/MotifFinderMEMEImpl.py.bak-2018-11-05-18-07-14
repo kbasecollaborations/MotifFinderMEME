@@ -41,7 +41,7 @@ class MotifFinderMEME:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "git@github.com:arwyer/MotifFinderMEME.git"
-    GIT_COMMIT_HASH = "a5aab66d2d9cc152085a07af79e50bf38c929bb1"
+    GIT_COMMIT_HASH = "48272412c31d6c453fe894a6047de604cca3f7ea"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -61,8 +61,8 @@ class MotifFinderMEME:
         :param params: instance of type "find_motifs_params" (Genome is a
            KBase genome Featureset is a KBase featureset Promoter_length is
            the length of promoter requested for all genes) -> structure:
-           parameter "workspace_name" of String, parameter "fastapath" of
-           String, parameter "motif_min_length" of Long, parameter
+           parameter "workspace_name" of String, parameter "SequenceSetRef"
+           of String, parameter "motif_min_length" of Long, parameter
            "motif_max_length" of Long
         :returns: instance of type "extract_output_params" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
@@ -90,7 +90,7 @@ class MotifFinderMEME:
         meme_out_path = '/kb/module/work/tmp/meme_out/meme.txt'
         meme_params = {'ws_name' : params['workspace_name'], 'path' : meme_out_path,'obj_name' : 'MEME_Motif_Set'}
         MOU = MotifUtils(self.callback_url)
-        obj_ref = MOU.UploadFromMEME(meme_params)['obj_ref']
+        obj_ref = MOU.UploadFromMEME(meme_params)[0]['obj_ref']
         #memeMotifList = MEU.parse_meme_output()
 
         #HERE:
@@ -289,6 +289,48 @@ function openReport(evt, reportName) {
         # return the results
         return [output]
 
+    def ExtractPromotersFromFeatureSetandDiscoverMotifs(self, ctx, params):
+        """
+        :param params: instance of type "extract_input" -> structure:
+           parameter "workspace_name" of String, parameter "genome_ref" of
+           String, parameter "featureSet_ref" of String, parameter
+           "promoter_length" of Long, parameter "motif_min_length" of Long,
+           parameter "motif_max_length" of Long
+        :returns: instance of type "extract_output_params" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN ExtractPromotersFromFeatureSetandDiscoverMotifs
+
+        #Pseudo:
+        #build sequence with utils
+        #build fasta from sequence set
+        #run meme
+        #extract object with utils
+
+        SSU = SequenceSetUtils(self.callback_url)
+
+        BuildParams = {'ws_name' : params['workspace_name'], 'FeatureSet_ref' : params['featureSet_ref'], 'genome_ref' : params['genome_ref'], 'upstream_length' : params['promoter_length']}
+        SSref =  SSU.buildFromFeatureSet(BuildParams)['SequenceSet_ref']
+        fastapath = '/kb/module/tmp/SeqSet.fa'
+        FastaParams = {'workspace_name' : params['workspace_name'] , 'SequenceSetRef' : SSref , 'fasta_outpath' : fastapath}
+        self.getImpl().BuildFastaFromSequenceSet(ctx,params)
+
+        findmotifsparams= {'workspace_name' : params['workspace_name'],'fastapath':fastapath,'motif_min_length':params['motif_min_length'],'motif_max_length':params['motif_max_length']}
+
+        output = find_motifs(ctx,findmotifsparams)[0]
+
+
+        #END ExtractPromotersFromFeatureSetandDiscoverMotifs
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method ExtractPromotersFromFeatureSetandDiscoverMotifs return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
     def BuildFastaFromSequenceSet(self, ctx, params):
         """
         :param params: instance of type "BuildSeqIn" -> structure: parameter
@@ -319,48 +361,6 @@ function openReport(evt, reportName) {
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method BuildFastaFromSequenceSet return value ' +
-                             'output is not type dict as required.')
-        # return the results
-        return [output]
-
-    def ExtractPromotersFromFeatureSetandDiscoverMotifs(self, ctx, params):
-        """
-        :param params: instance of type "extract_input" -> structure:
-           parameter "workspace_name" of String, parameter "genome_ref" of
-           String, parameter "featureSet_ref" of String, parameter
-           "promoter_length" of Long, parameter "motif_min_length" of Long,
-           parameter "motif_max_length" of Long
-        :returns: instance of type "extract_output_params" -> structure:
-           parameter "report_name" of String, parameter "report_ref" of String
-        """
-        # ctx is the context object
-        # return variables are: output
-        #BEGIN ExtractPromotersFromFeatureSetandDiscoverMotifs
-
-        #Pseudo:
-        #build sequence with utils
-        #build fasta from sequence set
-        #run meme
-        #extract object with utils
-
-        SSU = SequenceSetUtils(self.callback_url)
-
-        BuildParams = {'ws_name' : params['workspace_name'], 'FeatureSet_ref' : params['featureSet_ref'], 'genome_ref' : params['genome_ref'], 'upstream_length' : params['promoter_length']}
-        SSref =  SSU.buildFromFeatureSet(BuildParams)['SequenceSet_ref']
-        fastapath = '/kb/module/work/tmp/SeqSet.fa'
-        FastaParams = {'workspace_name' : params['workspace_name'] , 'SequenceSetRef' : SSref , 'fasta_outpath' : fastapath}
-        output = self.BuildFastaFromSequenceSet(ctx,FastaParams)
-
-        findmotifsparams= {'workspace_name' : params['workspace_name'],'fastapath':fastapath,'motif_min_length':params['motif_min_length'],'motif_max_length':params['motif_max_length']}
-
-        output = self.find_motifs(ctx,findmotifsparams)[0]
-
-
-        #END ExtractPromotersFromFeatureSetandDiscoverMotifs
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method ExtractPromotersFromFeatureSetandDiscoverMotifs return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

@@ -48,10 +48,12 @@ module MotifFinderMEME {
       funcdef find_motifs(find_motifs_params params)
         returns (extract_output_params output) authentication required;
 
+      funcdef BuildFastaFromSequenceSet(BuildSeqIn params)
+        returns (BuildSeqOut output) authentication required;
+
       funcdef ExtractPromotersFromFeatureSetandDiscoverMotifs(extract_input params)
         returns (extract_output_params output) authentication required;
 
-      funcdef BuildFastaFromSequenceSet(BuildSeqIn params)
-        returns (BuildSeqOut output) authentication required;
+
 
 };

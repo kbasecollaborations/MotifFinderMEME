@@ -123,7 +123,7 @@ $params is a MotifFinderMEME.find_motifs_params
 $output is a MotifFinderMEME.extract_output_params
 find_motifs_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
-	SequenceSetRef has a value which is a string
+	fastapath has a value which is a string
 	motif_min_length has a value which is an int
 	motif_max_length has a value which is an int
 extract_output_params is a reference to a hash where the following keys are defined:
@@ -140,7 +140,7 @@ $params is a MotifFinderMEME.find_motifs_params
 $output is a MotifFinderMEME.extract_output_params
 find_motifs_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
-	SequenceSetRef has a value which is a string
+	fastapath has a value which is a string
 	motif_min_length has a value which is an int
 	motif_max_length has a value which is an int
 extract_output_params is a reference to a hash where the following keys are defined:
@@ -200,6 +200,100 @@ extract_output_params is a reference to a hash where the following keys are defi
         Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method find_motifs",
 					    status_line => $self->{client}->status_line,
 					    method_name => 'find_motifs',
+				       );
+    }
+}
+ 
+
+
+=head2 BuildFastaFromSequenceSet
+
+  $output = $obj->BuildFastaFromSequenceSet($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a MotifFinderMEME.BuildSeqIn
+$output is a MotifFinderMEME.BuildSeqOut
+BuildSeqIn is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	SequenceSetRef has a value which is a string
+	fasta_outpath has a value which is a string
+BuildSeqOut is a reference to a hash where the following keys are defined:
+	fasta_outpath has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a MotifFinderMEME.BuildSeqIn
+$output is a MotifFinderMEME.BuildSeqOut
+BuildSeqIn is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	SequenceSetRef has a value which is a string
+	fasta_outpath has a value which is a string
+BuildSeqOut is a reference to a hash where the following keys are defined:
+	fasta_outpath has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub BuildFastaFromSequenceSet
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function BuildFastaFromSequenceSet (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to BuildFastaFromSequenceSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'BuildFastaFromSequenceSet');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "MotifFinderMEME.BuildFastaFromSequenceSet",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'BuildFastaFromSequenceSet',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method BuildFastaFromSequenceSet",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'BuildFastaFromSequenceSet',
 				       );
     }
 }
@@ -306,100 +400,6 @@ extract_output_params is a reference to a hash where the following keys are defi
     }
 }
  
-
-
-=head2 BuildFastaFromSequenceSet
-
-  $output = $obj->BuildFastaFromSequenceSet($params)
-
-=over 4
-
-=item Parameter and return types
-
-=begin html
-
-<pre>
-$params is a MotifFinderMEME.BuildSeqIn
-$output is a MotifFinderMEME.BuildSeqOut
-BuildSeqIn is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a string
-	SequenceSetRef has a value which is a string
-	fasta_outpath has a value which is a string
-BuildSeqOut is a reference to a hash where the following keys are defined:
-	fasta_outpath has a value which is a string
-
-</pre>
-
-=end html
-
-=begin text
-
-$params is a MotifFinderMEME.BuildSeqIn
-$output is a MotifFinderMEME.BuildSeqOut
-BuildSeqIn is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a string
-	SequenceSetRef has a value which is a string
-	fasta_outpath has a value which is a string
-BuildSeqOut is a reference to a hash where the following keys are defined:
-	fasta_outpath has a value which is a string
-
-
-=end text
-
-=item Description
-
-
-
-=back
-
-=cut
-
- sub BuildFastaFromSequenceSet
-{
-    my($self, @args) = @_;
-
-# Authentication: required
-
-    if ((my $n = @args) != 1)
-    {
-	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function BuildFastaFromSequenceSet (received $n, expecting 1)");
-    }
-    {
-	my($params) = @args;
-
-	my @_bad_arguments;
-        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
-        if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to BuildFastaFromSequenceSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
-	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'BuildFastaFromSequenceSet');
-	}
-    }
-
-    my $url = $self->{url};
-    my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "MotifFinderMEME.BuildFastaFromSequenceSet",
-	    params => \@args,
-    });
-    if ($result) {
-	if ($result->is_error) {
-	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
-					       code => $result->content->{error}->{code},
-					       method_name => 'BuildFastaFromSequenceSet',
-					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
-					      );
-	} else {
-	    return wantarray ? @{$result->result} : $result->result->[0];
-	}
-    } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method BuildFastaFromSequenceSet",
-					    status_line => $self->{client}->status_line,
-					    method_name => 'BuildFastaFromSequenceSet',
-				       );
-    }
-}
- 
   
 sub status
 {
@@ -443,16 +443,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'BuildFastaFromSequenceSet',
+                method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method BuildFastaFromSequenceSet",
+            error => "Error invoking method ExtractPromotersFromFeatureSetandDiscoverMotifs",
             status_line => $self->{client}->status_line,
-            method_name => 'BuildFastaFromSequenceSet',
+            method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs',
         );
     }
 }
@@ -509,7 +509,7 @@ Promoter_length is the length of promoter requested for all genes
 <pre>
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
-SequenceSetRef has a value which is a string
+fastapath has a value which is a string
 motif_min_length has a value which is an int
 motif_max_length has a value which is an int
 
@@ -521,7 +521,7 @@ motif_max_length has a value which is an int
 
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
-SequenceSetRef has a value which is a string
+fastapath has a value which is a string
 motif_min_length has a value which is an int
 motif_max_length has a value which is an int
 

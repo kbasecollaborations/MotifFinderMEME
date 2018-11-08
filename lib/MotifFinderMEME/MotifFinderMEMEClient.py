@@ -38,14 +38,26 @@ class MotifFinderMEME(object):
         :param params: instance of type "find_motifs_params" (Genome is a
            KBase genome Featureset is a KBase featureset Promoter_length is
            the length of promoter requested for all genes) -> structure:
-           parameter "workspace_name" of String, parameter "SequenceSetRef"
-           of String, parameter "motif_min_length" of Long, parameter
+           parameter "workspace_name" of String, parameter "fastapath" of
+           String, parameter "motif_min_length" of Long, parameter
            "motif_max_length" of Long
         :returns: instance of type "extract_output_params" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
         return self._client.call_method(
             'MotifFinderMEME.find_motifs',
+            [params], self._service_ver, context)
+
+    def BuildFastaFromSequenceSet(self, params, context=None):
+        """
+        :param params: instance of type "BuildSeqIn" -> structure: parameter
+           "workspace_name" of String, parameter "SequenceSetRef" of String,
+           parameter "fasta_outpath" of String
+        :returns: instance of type "BuildSeqOut" -> structure: parameter
+           "fasta_outpath" of String
+        """
+        return self._client.call_method(
+            'MotifFinderMEME.BuildFastaFromSequenceSet',
             [params], self._service_ver, context)
 
     def ExtractPromotersFromFeatureSetandDiscoverMotifs(self, params, context=None):
@@ -60,18 +72,6 @@ class MotifFinderMEME(object):
         """
         return self._client.call_method(
             'MotifFinderMEME.ExtractPromotersFromFeatureSetandDiscoverMotifs',
-            [params], self._service_ver, context)
-
-    def BuildFastaFromSequenceSet(self, params, context=None):
-        """
-        :param params: instance of type "BuildSeqIn" -> structure: parameter
-           "workspace_name" of String, parameter "SequenceSetRef" of String,
-           parameter "fasta_outpath" of String
-        :returns: instance of type "BuildSeqOut" -> structure: parameter
-           "fasta_outpath" of String
-        """
-        return self._client.call_method(
-            'MotifFinderMEME.BuildFastaFromSequenceSet',
             [params], self._service_ver, context)
 
     def status(self, context=None):

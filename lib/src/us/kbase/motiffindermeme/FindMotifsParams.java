@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "SequenceSetRef",
+    "fastapath",
     "motif_min_length",
     "motif_max_length"
 })
@@ -32,8 +32,8 @@ public class FindMotifsParams {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
-    @JsonProperty("SequenceSetRef")
-    private String SequenceSetRef;
+    @JsonProperty("fastapath")
+    private String fastapath;
     @JsonProperty("motif_min_length")
     private Long motifMinLength;
     @JsonProperty("motif_max_length")
@@ -55,18 +55,18 @@ public class FindMotifsParams {
         return this;
     }
 
-    @JsonProperty("SequenceSetRef")
-    public String getSequenceSetRef() {
-        return SequenceSetRef;
+    @JsonProperty("fastapath")
+    public String getFastapath() {
+        return fastapath;
     }
 
-    @JsonProperty("SequenceSetRef")
-    public void setSequenceSetRef(String SequenceSetRef) {
-        this.SequenceSetRef = SequenceSetRef;
+    @JsonProperty("fastapath")
+    public void setFastapath(String fastapath) {
+        this.fastapath = fastapath;
     }
 
-    public FindMotifsParams withSequenceSetRef(String SequenceSetRef) {
-        this.SequenceSetRef = SequenceSetRef;
+    public FindMotifsParams withFastapath(String fastapath) {
+        this.fastapath = fastapath;
         return this;
     }
 
@@ -112,7 +112,7 @@ public class FindMotifsParams {
 
     @Override
     public String toString() {
-        return ((((((((((("FindMotifsParams"+" [workspaceName=")+ workspaceName)+", SequenceSetRef=")+ SequenceSetRef)+", motifMinLength=")+ motifMinLength)+", motifMaxLength=")+ motifMaxLength)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("FindMotifsParams"+" [workspaceName=")+ workspaceName)+", fastapath=")+ fastapath)+", motifMinLength=")+ motifMinLength)+", motifMaxLength=")+ motifMaxLength)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
