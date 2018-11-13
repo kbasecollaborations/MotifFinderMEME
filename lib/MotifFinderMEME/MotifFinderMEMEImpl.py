@@ -94,7 +94,7 @@ class MotifFinderMEME:
         locDict = {}
         if 'SS_ref' in params:
             get_ss_params = {'object_refs' : [params['SS_ref']]}
-            SS = dfu.get_objects(get_obj_params)['data'][0]['data']
+            SS = dfu.get_objects(get_ss_params)['data'][0]['data']
             for s in SS['sequences']:
                 if s['Source'] is not None:
                     locDict['sequence_id'] = {'contig' : s['Source'][0][0],'start':str(s['Source'][0][1])}
