@@ -120,7 +120,7 @@ class MotifFinderMEME:
         dfu = DataFileUtil(self.callback_url)
         get_obj_params = {'object_refs' : [obj_ref]}
         memeMotifSet = dfu.get_objects(get_obj_params)['data'][0]['data']
-        buildReportFromMotifSet(memeMotifSet,htmlDir,'MEME')
+        buildReportFromMotifSet(memeMotifSet,htmlDir,'meme')
 
         #TODO: Here replace the makereport with a call to motifset utils
         #subprocess.call(['python','/kb/module/lib/identify_promoter/Utils/makeReport.py',JsonPath + '/meme_out/meme.json',htmlDir + '/meme.html',str(numFeat)])
