@@ -38,7 +38,7 @@ def buildReportFromMotifSet(MotifSet,htmlDir,imgStr):
         #saveTo = htmlDir + '/' + imgName
         #saveTo = '/' + '/'.join(sys.argv[2].split('/')[:-1]) + '/'  + imgName
         saveTo = htmlDir + '/' + imgName
-        htmlReport += '<td> <img src="' + imgName + '" height=25%> </td>\n'
+        htmlReport += '<td> <img src="' + imgName + '.png'+ '" height=25%> </td>\n'
         seqDict = {}
         #for l in motif['Locations']:
         #    seqDict[l[0]] = 1
@@ -58,6 +58,6 @@ def buildReportFromMotifSet(MotifSet,htmlDir,imgStr):
     htmlReport += '</table>\n'
     htmlReport += '</body></html>'
     #htmlPath = htmlDir + '/' + sys.argv[2]
-    htmlFileName = htmlDir+ '/' + 'imgStr' + '.html'
+    htmlFileName = htmlDir+ '/' + imgStr + '.html'
     with open(htmlFileName,'w') as html_handle:
         html_handle.write(str(htmlReport))
