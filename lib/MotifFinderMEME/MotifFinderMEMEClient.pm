@@ -400,6 +400,100 @@ extract_output_params is a reference to a hash where the following keys are defi
     }
 }
  
+
+
+=head2 DiscoverMotifsFromFasta
+
+  $output = $obj->DiscoverMotifsFromFasta($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a MotifFinderMEME.discover_fasta_input
+$output is a MotifFinderMEME.extract_output_params
+discover_fasta_input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	fasta_path has a value which is a string
+extract_output_params is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a MotifFinderMEME.discover_fasta_input
+$output is a MotifFinderMEME.extract_output_params
+discover_fasta_input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	fasta_path has a value which is a string
+extract_output_params is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub DiscoverMotifsFromFasta
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function DiscoverMotifsFromFasta (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to DiscoverMotifsFromFasta:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'DiscoverMotifsFromFasta');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "MotifFinderMEME.DiscoverMotifsFromFasta",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'DiscoverMotifsFromFasta',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method DiscoverMotifsFromFasta",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'DiscoverMotifsFromFasta',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -443,16 +537,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs',
+                method_name => 'DiscoverMotifsFromFasta',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method ExtractPromotersFromFeatureSetandDiscoverMotifs",
+            error => "Error invoking method DiscoverMotifsFromFasta",
             status_line => $self->{client}->status_line,
-            method_name => 'ExtractPromotersFromFeatureSetandDiscoverMotifs',
+            method_name => 'DiscoverMotifsFromFasta',
         );
     }
 }
@@ -596,6 +690,38 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 report_name has a value which is a string
 report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 discover_fasta_input
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+fasta_path has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+fasta_path has a value which is a string
 
 
 =end text

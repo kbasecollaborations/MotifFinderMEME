@@ -12,12 +12,15 @@ module MotifFinderMEME {
      Promoter_length is the length of promoter requested for all genes
     */
 
+      /*
+      SS_ref - optional, used for exact genome locations if possible
+      */
       typedef structure{
         string workspace_name;
         string fastapath;
         int motif_min_length;
         int motif_max_length;
-
+        string SS_ref;
       } find_motifs_params;
 
       typedef structure {
@@ -34,6 +37,10 @@ module MotifFinderMEME {
         string report_ref;
       } extract_output_params;
 
+      typedef structure{
+        string workspace_name;
+        string fasta_path;
+      } discover_fasta_input;
 
       typedef structure{
         string workspace_name;
@@ -54,6 +61,8 @@ module MotifFinderMEME {
       funcdef ExtractPromotersFromFeatureSetandDiscoverMotifs(extract_input params)
         returns (extract_output_params output) authentication required;
 
+      funcdef DiscoverMotifsFromFasta(discover_fasta_input params)
+        returns (extract_output_params output) authentication required;
 
 
 };
