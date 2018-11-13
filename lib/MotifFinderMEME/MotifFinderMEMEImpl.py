@@ -97,7 +97,7 @@ class MotifFinderMEME:
             SS = dfu.get_objects(get_obj_params)['data'][0]['data']
             for s in SS['sequences']:
                 if s['Source'] is not None:
-                locDict['sequence_id'] = {'contig' : s['Source'][0][0],'start':str(s['Source'][0][1])}
+                    locDict['sequence_id'] = {'contig' : s['Source'][0][0],'start':str(s['Source'][0][1])}
         if len(locDict.keys()) > 0:
             meme_params['absolute_locations'] = locDict
         obj_ref = MOU.UploadFromMEME(meme_params)['obj_ref']
