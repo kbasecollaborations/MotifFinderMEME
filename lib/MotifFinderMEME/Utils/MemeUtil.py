@@ -5,7 +5,7 @@ import subprocess
 
 #build the command to run meme, use some default flags
 def build_meme_command(inputFilePath):
-    outputFlag = ' -o /kb/module/work/tmp/meme_out -revcomp -dna -evt .001'
+    outputFlag = ' -o /kb/module/work/tmp/meme_out -revcomp -dna -nmotifs 10'
     #no cache
     #outputFlag = ' -o ./tmp/meme_out -revcomp -dna'
     command = '/kb/deployment/bin/meme/bin/meme '  + inputFilePath + outputFlag
