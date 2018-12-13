@@ -61,7 +61,8 @@ def parse_meme_output():
             motifDict['Iupac_signature'] = motifSignature
             try:
                 eval = float(elems[-1])
-            except ValueError:
+            except:
+                print('PRINTING BAD LINE:')
                 print(line)
             motifDict['p-value'] = eval
             motifDict['Locations'] = []
