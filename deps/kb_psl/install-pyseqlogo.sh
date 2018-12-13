@@ -10,7 +10,7 @@ pip install --upgrade numpy
 pip install six
 pip install --upgrade matplotlib==2.1.0
 pip install pandas
-python ChanePath.py
+python ChangePath.py
 git clone https://github.com/saketkc/pyseqlogo.git
 cd pyseqlogo
 python setup.py build
