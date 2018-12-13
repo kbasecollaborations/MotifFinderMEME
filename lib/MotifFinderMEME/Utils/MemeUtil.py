@@ -37,6 +37,7 @@ def parse_meme_output():
     motifDict = {}
     motifList = []
     for line in file:
+        print(line)
         if 'COMMAND LINE SUMMARY' in line:
             countStars = True
             continue
@@ -59,11 +60,8 @@ def parse_meme_output():
             #print(line)
             motifSignature = elems[1]
             motifDict['Iupac_signature'] = motifSignature
-            try:
-                eval = float(elems[-1])
-            except:
-                print('PRINTING BAD LINE:')
-                print(line)
+            eval = float(elems[-1])
+
             motifDict['p-value'] = eval
             motifDict['Locations'] = []
             motifDict['pwm'] = []
