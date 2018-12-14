@@ -21,6 +21,7 @@ from MotifFinderMEME.Utils.makeReportFromMotifSet import buildReportFromMotifSet
 #from identify_promoter.Utils.ParsePromFile import makePromHTMLReports
 import subprocess
 from biokbase.workspace.client import Workspace
+from MotifFinderMEME.Utils.MakeNewReport import MakeReport
 #END_HEADER
 
 
@@ -115,22 +116,23 @@ class MotifFinderMEME:
         timestamp = str(timestamp)
         htmlDir = self.shared_folder + '/html' +  timestamp
         os.mkdir(htmlDir)
-        lineCount = 0
-        with open(promoterFastaFilePath,'r') as pFile:
-            for line in pFile:
-                lineCount += 1
-        numFeat = lineCount/2
-        with open(promoterFastaFilePath,'r') as pFile:
-            fileStr = pFile.read()
-        promHtmlStr = '<html><body> '  + fileStr + ' </body></html>'
-        with open(htmlDir + '/promoters.html','w') as promHTML:
-            promHTML.write(promHtmlStr)
-        JsonPath = '/kb/module/work/tmp'
+        #lineCount = 0
+        #with open(promoterFastaFilePath,'r') as pFile:
+        #    for line in pFile:
+        #        lineCount += 1
+        #numFeat = lineCount/2
+        #with open(promoterFastaFilePath,'r') as pFile:
+        #    fileStr = pFile.read()
+        #promHtmlStr = '<html><body> '  + fileStr + ' </body></html>'
+        #with open(htmlDir + '/promoters.html','w') as promHTML:
+        #    promHTML.write(promHtmlStr)
+        #JsonPath = '/kb/module/work/tmp'
 
         dfu = DataFileUtil(self.callback_url)
         get_obj_params = {'object_refs' : [obj_ref]}
         memeMotifSet = dfu.get_objects(get_obj_params)['data'][0]['data']
-        buildReportFromMotifSet(memeMotifSet,htmlDir,'meme')
+        MakeReport(htmlDir,memeMotifSet)
+        #buildReportFromMotifSet(memeMotifSet,htmlDir,'meme')
 
         #TODO: Here replace the makereport with a call to motifset utils
         #subprocess.call(['python','/kb/module/lib/identify_promoter/Utils/makeReport.py',JsonPath + '/meme_out/meme.json',htmlDir + '/meme.html',str(numFeat)])
