@@ -14,3 +14,4 @@ def MakeReport(htmlDir,motifSet):
     jsonFName = htmlDir + '/ReportMotif.json'
     with open(jsonFName,'w') as motifjson:
         json.dump(motifSet,motifjson)
+    return
