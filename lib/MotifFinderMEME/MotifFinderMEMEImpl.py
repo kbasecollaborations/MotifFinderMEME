@@ -101,6 +101,8 @@ class MotifFinderMEME:
                     locDict['sequence_id'] = {'contig' : s['source']['location'][0][0],'start':str(s['source']['location'][0][1])}
         if len(locDict.keys()) > 0:
             meme_params['absolute_locations'] = locDict
+        meme_params['min_len'] = motMin
+        meme_params['max_len'] = motMax
         obj_ref = MOU.UploadFromMEME(meme_params)['obj_ref']
         #memeMotifList = MEU.parse_meme_output()
 
