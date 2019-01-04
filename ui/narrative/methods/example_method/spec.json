@@ -68,6 +68,15 @@
                 "validate_as": "int",
                 "min_integer" : 0
             }
+        },
+        {
+
+            "id": "obj_name",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "MEME_Motif_Set" ],
+            "field_type": "text"
         }
     ],
     "behavior": {
@@ -103,6 +112,11 @@
                 {
                     "input_parameter": "motif_max_length",
                     "target_property": "motif_max_length"
+
+                },
+                {
+                    "input_parameter": "obj_name",
+                    "target_property": "obj_name"
 
                 }
             ],

@@ -54,6 +54,11 @@ parameters :
             Maximum motif length
         short-hint : |
             Maximum length of motif to search for
+    obj_name :
+        ui-name : |
+            Output object name
+        short-hint : |
+            Output object name
 
 
 description : |

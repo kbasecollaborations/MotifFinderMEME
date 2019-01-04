@@ -21,6 +21,7 @@ module MotifFinderMEME {
         int motif_min_length;
         int motif_max_length;
         string SS_ref;
+        string obj_name;
       } find_motifs_params;
 
       typedef structure {
@@ -30,6 +31,7 @@ module MotifFinderMEME {
         int promoter_length;
         int motif_min_length;
         int motif_max_length;
+        string obj_name;
       } extract_input;
 
       typedef structure {
