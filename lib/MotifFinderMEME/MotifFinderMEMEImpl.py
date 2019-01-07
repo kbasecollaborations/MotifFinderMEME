@@ -1,18 +1,10 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
 import os
-import json
-from Bio import SeqIO
-from pprint import pprint, pformat
-from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
 from KBaseReport.KBaseReportClient import KBaseReport
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from SequenceSetUtils.SequenceSetUtilsClient import SequenceSetUtils
 from MotifUtils.MotifUtilsClient import MotifUtils
-import subprocess
-import os
-import re
-from pprint import pprint, pformat
 from datetime import datetime
 import uuid
 import MotifFinderMEME.Utils.MotifSetUtil as MSU
@@ -22,6 +14,7 @@ from MotifFinderMEME.Utils.makeReportFromMotifSet import buildReportFromMotifSet
 import subprocess
 from biokbase.workspace.client import Workspace
 from MotifFinderMEME.Utils.MakeNewReport import MakeReport
+from MotifFinderMEME.Utils.FastaUtils import RemoveRepeats
 #END_HEADER
 
 
@@ -292,7 +285,7 @@ class MotifFinderMEME:
         fastapath = '/kb/module/work/tmp/SeqSet.fa'
         FastaParams = {'workspace_name' : params['workspace_name'] , 'SequenceSetRef' : SSref , 'fasta_outpath' : fastapath}
         output = self.BuildFastaFromSequenceSet(ctx,FastaParams)
-
+        RemoveRepeats(fastapath)
         findmotifsparams= {'workspace_name' : params['workspace_name'],'fastapath':fastapath,'motif_min_length':params['motif_min_length'],'motif_max_length':params['motif_max_length'],'SS_ref':SSref,'obj_name':params['obj_name']}
 
         output = self.find_motifs(ctx,findmotifsparams)[0]

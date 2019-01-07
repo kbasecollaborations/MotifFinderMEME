@@ -2,7 +2,7 @@ module-name:
     MotifFinderMEME
 
 module-description:
-    A KBase module
+    Use the MEME motif finding tool to discover sequence motifs upsteam of a specified gene list.
 
 service-language:
     python
@@ -12,4 +12,3 @@ module-version:
 
 owners:
     [arwyer]
-

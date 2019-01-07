@@ -62,4 +62,10 @@ parameters :
 
 
 description : |
-    <p>Method to find promoters.</p>
+    <p>MEME is an application that takes an algorithmic approach to discovering novel, ungapped, motifs with recurring and fixed-length patterns, within input sequences. The MEME algorithm search for motifs in four steps: starting points for motifs are predicted using a geometric progression within the motif minimum and maximum length bounds, canidate starting points are then assembled through an expectation maximization algorithm which ranks starting points according to maximum likelihood sense, then MEME further refines the list of found motifs by testing sub-motifs spanned by the constructing consequence columnar structures from the motif list further ranks these results and also shortens found motifs by using a procedure to minimize gaps, the fourth and final step of the MEME algorithm is motif erasing; in which motifs found and identified in good consensus are ‘erased’ from the motif list within the expectation maximization list. </p>
+
+    <p>Input to Motif Finder MEME start with a feature set, which can either be created through a RNA-seq analysis pipeline, network clustering analysis, or by picking features out from a particular genome. From this feature set, upstream sequences are collected and then the MEME analysis is run on the promoter sequence of length defined by the user. </p>
+
+    <p>This app is part of a series of app stacked to find motifs within upstream sequence regions. They are used in combination with Motif Finder Ensemble to aggregate motif finder results to produce more accurately identified motifs. </p>
+
+    <p>Timothy L. Bailey and Charles Elkan, "Fitting a mixture model by expectation maximization to discover motifs in biopolymers", Proceedings of the Second International Conference on Intelligent Systems for Molecular Biology, pp. 28-36, AAAI Press, Menlo Park, California, 1994. http://www.sdsc.edu/~tbailey/papers/ismb94.pdf </p>
