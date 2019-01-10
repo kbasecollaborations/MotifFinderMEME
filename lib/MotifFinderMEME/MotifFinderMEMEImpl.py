@@ -79,7 +79,7 @@ class MotifFinderMEME:
         #promoterFastaFilePath = self.get_promoter_for_gene(ctx,params)[0]
         promoterFastaFilePath = params['fastapath']
 
-        MEMEMotifCommand = MEU.build_meme_command(promoterFastaFilePath)
+        MEMEMotifCommand = MEU.build_meme_command(promoterFastaFilePath,motMin,motMax)
         MEU.run_meme_command(MEMEMotifCommand)
         meme_out_path = '/kb/module/work/tmp/meme_out/meme.txt'
         meme_params = {'ws_name' : params['workspace_name'], 'path' : meme_out_path,'obj_name' : params['obj_name']}
