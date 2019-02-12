@@ -239,6 +239,7 @@ class MotifFinderMEME:
         #BEGIN BuildFastaFromSequenceSet
         #background_path = '/kb/module/work/tmp/background.txt'
         dfu = DataFileUtil(self.callback_url)
+
         if params['TESTFLAG'] and params['background']:
             targetpath = '/kb/module/work/tmp/testgenome.fa'
             TU.GetGenome(targetpath)
@@ -383,6 +384,8 @@ class MotifFinderMEME:
             FastaParams['genome_ref'] = 'NULL'
         if 'TESTFLAG' in params:
             FastaParams['TESTFLAG'] = params['TESTFLAG']
+        else:
+            FastaParams['TESTFLAG'] = 0
         output = self.BuildFastaFromSequenceSet(ctx,FastaParams)
 
         #RemoveRepeats(fastapath,newfastapath)
