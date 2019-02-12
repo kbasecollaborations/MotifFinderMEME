@@ -259,7 +259,7 @@ class MotifFinderMEME:
             assembly_ref = {'ref': aref}
             print('Downloading Assembly data as a Fasta file.')
             assemblyUtil = AssemblyUtil(self.callback_url)
-            fasta_file = assemblyUtil.get_assembly_as_fasta(assembly_ref)
+            fasta_file = assemblyUtil.get_assembly_as_fasta(assembly_ref)['path']
             BuildBackground(fasta_file)
 
         dfu = DataFileUtil(self.callback_url)
