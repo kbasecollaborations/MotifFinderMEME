@@ -262,10 +262,12 @@ class MotifFinderMEME:
             fasta_file = assemblyUtil.get_assembly_as_fasta(assembly_ref)['path']
             BuildBackground(fasta_file)
 
-        dfu = DataFileUtil(self.callback_url)
-        get_objects_params = {'object_refs' : [params['SequenceSetRef']]}
-        SeqSet = dfu.get_objects(get_objects_params)['data'][0]['data']
+        #dfu = DataFileUtil(self.callback_url)
 
+        get_objects_params = {'object_refs' : [params['SequenceSetRef']]}
+
+        SeqSet = dfu.get_objects(get_objects_params)['data'][0]['data']
+        print(SeqSet)
         outFile = open(params['fasta_outpath'],'w')
         for s in SeqSet['sequences']:
             sname = '>' + s['sequence_id'] + '\n'
