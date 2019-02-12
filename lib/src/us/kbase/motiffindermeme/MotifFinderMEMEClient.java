@@ -230,6 +230,23 @@ public class MotifFinderMEMEClient {
         return res.get(0);
     }
 
+    /**
+     * <p>Original spec-file function name: DiscoverMotifsFromSequenceSet</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.motiffindermeme.DiscoverSeqInput DiscoverSeqInput} (original type "discover_seq_input")
+     * @return   parameter "output" of type {@link us.kbase.motiffindermeme.ExtractOutputParams ExtractOutputParams} (original type "extract_output_params")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExtractOutputParams discoverMotifsFromSequenceSet(DiscoverSeqInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExtractOutputParams>> retType = new TypeReference<List<ExtractOutputParams>>() {};
+        List<ExtractOutputParams> res = caller.jsonrpcCall("MotifFinderMEME.DiscoverMotifsFromSequenceSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
     public Map<String, Object> status(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         TypeReference<List<Map<String, Object>>> retType = new TypeReference<List<Map<String, Object>>>() {};

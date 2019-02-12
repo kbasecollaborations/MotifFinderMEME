@@ -354,6 +354,10 @@ class Application(object):
                              name='MotifFinderMEME.DiscoverMotifsFromFasta',
                              types=[dict])
         self.method_authentication['MotifFinderMEME.DiscoverMotifsFromFasta'] = 'required'  # noqa
+        self.rpc_service.add(impl_MotifFinderMEME.DiscoverMotifsFromSequenceSet,
+                             name='MotifFinderMEME.DiscoverMotifsFromSequenceSet',
+                             types=[dict])
+        self.method_authentication['MotifFinderMEME.DiscoverMotifsFromSequenceSet'] = 'required'  # noqa
         self.rpc_service.add(impl_MotifFinderMEME.status,
                              name='MotifFinderMEME.status',
                              types=[dict])

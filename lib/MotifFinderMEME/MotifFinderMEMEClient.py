@@ -35,12 +35,12 @@ class MotifFinderMEME(object):
 
     def find_motifs(self, params, context=None):
         """
-        :param params: instance of type "find_motifs_params" (Genome is a
-           KBase genome Featureset is a KBase featureset Promoter_length is
-           the length of promoter requested for all genes) -> structure:
-           parameter "workspace_name" of String, parameter "fastapath" of
-           String, parameter "motif_min_length" of Long, parameter
-           "motif_max_length" of Long
+        :param params: instance of type "find_motifs_params" (SS_ref -
+           optional, used for exact genome locations if possible) ->
+           structure: parameter "workspace_name" of String, parameter
+           "fastapath" of String, parameter "motif_min_length" of Long,
+           parameter "motif_max_length" of Long, parameter "SS_ref" of
+           String, parameter "obj_name" of String
         :returns: instance of type "extract_output_params" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -66,7 +66,8 @@ class MotifFinderMEME(object):
            parameter "workspace_name" of String, parameter "genome_ref" of
            String, parameter "featureSet_ref" of String, parameter
            "promoter_length" of Long, parameter "motif_min_length" of Long,
-           parameter "motif_max_length" of Long
+           parameter "motif_max_length" of Long, parameter "obj_name" of
+           String
         :returns: instance of type "extract_output_params" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -84,6 +85,21 @@ class MotifFinderMEME(object):
         """
         return self._client.call_method(
             'MotifFinderMEME.DiscoverMotifsFromFasta',
+            [params], self._service_ver, context)
+
+    def DiscoverMotifsFromSequenceSet(self, params, context=None):
+        """
+        :param params: instance of type "discover_seq_input" -> structure:
+           parameter "workspace_name" of String, parameter "genome_ref" of
+           String, parameter "SS_ref" of String, parameter "promoter_length"
+           of Long, parameter "motif_min_length" of Long, parameter
+           "motif_max_length" of Long, parameter "obj_name" of String,
+           parameter "background" of Long, parameter "mask_repeats" of Long
+        :returns: instance of type "extract_output_params" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method(
+            'MotifFinderMEME.DiscoverMotifsFromSequenceSet',
             [params], self._service_ver, context)
 
     def status(self, context=None):

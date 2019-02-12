@@ -34,16 +34,11 @@ parameters :
             Genome
         short-hint : |
             The genome to evaluate
-    featureSet_ref :
+    SS_ref :
         ui-name : |
-            Feature Set
+            Sequence Set
         short-hint : |
-            features
-    promoter_length :
-        ui-name : |
-            Promoter length
-        short-hint : |
-            Length to search over
+            sequences
     motif_min_length :
         ui-name : |
             Minimum motif length
@@ -59,7 +54,22 @@ parameters :
             Output object name
         short-hint : |
             Output object name
-
+    background :
+        ui-name : |
+            Use Background Model
+        short-hint : |
+            Use genome to create background model
+    mask_repeats :
+        ui-name : |
+            Mask Repeats
+        short-hint : |
+            Mask low complexity regions of sequences
+parameter-groups :
+    background_group :
+        ui-name : |
+            Background
+        short-hint : |
+            Build background model from genome
 
 description : |
     <p>MEME is an application that takes an algorithmic approach to discovering novel, ungapped, motifs with recurring and fixed-length patterns, within input sequences. The MEME algorithm search for motifs in four steps: starting points for motifs are predicted using a geometric progression within the motif minimum and maximum length bounds, canidate starting points are then assembled through an expectation maximization algorithm which ranks starting points according to maximum likelihood sense, then MEME further refines the list of found motifs by testing sub-motifs spanned by the constructing consequence columnar structures from the motif list further ranks these results and also shortens found motifs by using a procedure to minimize gaps, the fourth and final step of the MEME algorithm is motif erasing; in which motifs found and identified in good consensus are ‘erased’ from the motif list within the expectation maximization list. </p>

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: extract_input</p>
+ * <p>Original spec-file type: discover_seq_input</p>
  * 
  * 
  */
@@ -21,20 +21,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "genome_ref",
-    "featureSet_ref",
+    "SS_ref",
     "promoter_length",
     "motif_min_length",
     "motif_max_length",
-    "obj_name"
+    "obj_name",
+    "background",
+    "mask_repeats"
 })
-public class ExtractInput {
+public class DiscoverSeqInput {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
     @JsonProperty("genome_ref")
     private String genomeRef;
-    @JsonProperty("featureSet_ref")
-    private String featureSetRef;
+    @JsonProperty("SS_ref")
+    private String SSRef;
     @JsonProperty("promoter_length")
     private Long promoterLength;
     @JsonProperty("motif_min_length")
@@ -43,6 +45,10 @@ public class ExtractInput {
     private Long motifMaxLength;
     @JsonProperty("obj_name")
     private String objName;
+    @JsonProperty("background")
+    private Long background;
+    @JsonProperty("mask_repeats")
+    private Long maskRepeats;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -55,7 +61,7 @@ public class ExtractInput {
         this.workspaceName = workspaceName;
     }
 
-    public ExtractInput withWorkspaceName(String workspaceName) {
+    public DiscoverSeqInput withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
@@ -70,23 +76,23 @@ public class ExtractInput {
         this.genomeRef = genomeRef;
     }
 
-    public ExtractInput withGenomeRef(String genomeRef) {
+    public DiscoverSeqInput withGenomeRef(String genomeRef) {
         this.genomeRef = genomeRef;
         return this;
     }
 
-    @JsonProperty("featureSet_ref")
-    public String getFeatureSetRef() {
-        return featureSetRef;
+    @JsonProperty("SS_ref")
+    public String getSSRef() {
+        return SSRef;
     }
 
-    @JsonProperty("featureSet_ref")
-    public void setFeatureSetRef(String featureSetRef) {
-        this.featureSetRef = featureSetRef;
+    @JsonProperty("SS_ref")
+    public void setSSRef(String SSRef) {
+        this.SSRef = SSRef;
     }
 
-    public ExtractInput withFeatureSetRef(String featureSetRef) {
-        this.featureSetRef = featureSetRef;
+    public DiscoverSeqInput withSSRef(String SSRef) {
+        this.SSRef = SSRef;
         return this;
     }
 
@@ -100,7 +106,7 @@ public class ExtractInput {
         this.promoterLength = promoterLength;
     }
 
-    public ExtractInput withPromoterLength(Long promoterLength) {
+    public DiscoverSeqInput withPromoterLength(Long promoterLength) {
         this.promoterLength = promoterLength;
         return this;
     }
@@ -115,7 +121,7 @@ public class ExtractInput {
         this.motifMinLength = motifMinLength;
     }
 
-    public ExtractInput withMotifMinLength(Long motifMinLength) {
+    public DiscoverSeqInput withMotifMinLength(Long motifMinLength) {
         this.motifMinLength = motifMinLength;
         return this;
     }
@@ -130,7 +136,7 @@ public class ExtractInput {
         this.motifMaxLength = motifMaxLength;
     }
 
-    public ExtractInput withMotifMaxLength(Long motifMaxLength) {
+    public DiscoverSeqInput withMotifMaxLength(Long motifMaxLength) {
         this.motifMaxLength = motifMaxLength;
         return this;
     }
@@ -145,8 +151,38 @@ public class ExtractInput {
         this.objName = objName;
     }
 
-    public ExtractInput withObjName(String objName) {
+    public DiscoverSeqInput withObjName(String objName) {
         this.objName = objName;
+        return this;
+    }
+
+    @JsonProperty("background")
+    public Long getBackground() {
+        return background;
+    }
+
+    @JsonProperty("background")
+    public void setBackground(Long background) {
+        this.background = background;
+    }
+
+    public DiscoverSeqInput withBackground(Long background) {
+        this.background = background;
+        return this;
+    }
+
+    @JsonProperty("mask_repeats")
+    public Long getMaskRepeats() {
+        return maskRepeats;
+    }
+
+    @JsonProperty("mask_repeats")
+    public void setMaskRepeats(Long maskRepeats) {
+        this.maskRepeats = maskRepeats;
+    }
+
+    public DiscoverSeqInput withMaskRepeats(Long maskRepeats) {
+        this.maskRepeats = maskRepeats;
         return this;
     }
 
@@ -162,7 +198,7 @@ public class ExtractInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((("ExtractInput"+" [workspaceName=")+ workspaceName)+", genomeRef=")+ genomeRef)+", featureSetRef=")+ featureSetRef)+", promoterLength=")+ promoterLength)+", motifMinLength=")+ motifMinLength)+", motifMaxLength=")+ motifMaxLength)+", objName=")+ objName)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((("DiscoverSeqInput"+" [workspaceName=")+ workspaceName)+", genomeRef=")+ genomeRef)+", SSRef=")+ SSRef)+", promoterLength=")+ promoterLength)+", motifMinLength=")+ motifMinLength)+", motifMaxLength=")+ motifMaxLength)+", objName=")+ objName)+", background=")+ background)+", maskRepeats=")+ maskRepeats)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

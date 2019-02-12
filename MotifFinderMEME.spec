@@ -48,11 +48,27 @@ module MotifFinderMEME {
         string workspace_name;
         string SequenceSetRef;
         string fasta_outpath;
+        int background;
+        string genome_ref;
+        int mask_repeats;
       } BuildSeqIn;
 
       typedef structure{
         string fasta_outpath;
       } BuildSeqOut;
+
+      typedef structure{
+        string workspace_name;
+        string genome_ref;
+        string SS_ref;
+        int promoter_length;
+        int motif_min_length;
+        int motif_max_length;
+        string obj_name;
+        int background;
+        int mask_repeats;
+        mapping<string, string> background_group;
+      } discover_seq_input;
 
       funcdef find_motifs(find_motifs_params params)
         returns (extract_output_params output) authentication required;
@@ -64,6 +80,9 @@ module MotifFinderMEME {
         returns (extract_output_params output) authentication required;
 
       funcdef DiscoverMotifsFromFasta(discover_fasta_input params)
+        returns (extract_output_params output) authentication required;
+
+      funcdef DiscoverMotifsFromSequenceSet(discover_seq_input params)
         returns (extract_output_params output) authentication required;
 
 

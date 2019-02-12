@@ -88,16 +88,22 @@ class MotifFinderMEMETest(unittest.TestCase):
         # self.assertEqual(ret[...], ...) or other unittest methods
         params = {
             #'workspace_name': 'arwyer:narrative_1516985493280',
-            'workspace_name': 'pranjan77:narrative_1517498855061',
+            #'workspace_name': 'pranjan77:narrative_1517498855061',
+            'workspace_name': 'arwyer:narrative_1547068761422',
             #'genome_ref': '27852/2/1',
-            'genome_ref': '12566/5/3',
+            #'genome_ref': ,
             #'featureSet_ref': '27852/3/1',
-            'featureSet_ref': '12566/6/1',
+            #'featureSet_ref': '12566/6/1',
+            'SS_ref' : '22748/61/1',
             'promoter_length':100,
             'motif_min_length':8,
-            'motif_max_length':16
+            'motif_max_length':16,
+            'background_group': {'background' : 1, 'genome_ref' : '22748/2/1'},
+            'TESTFLAG' : 1,
+            'mask_repeats' : 1,
+            'obj_name' : 'MEMETESTOBJ'
         }
 
-        result = self.getImpl().ExtractPromotersFromFeatureSetandDiscoverMotifs(self.getContext(),params)
+        result = self.getImpl().DiscoverMotifsFromSequenceSet(self.getContext(),params)
         print('RESULT:')
         pprint(result)

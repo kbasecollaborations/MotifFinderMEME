@@ -14,9 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * <p>Original spec-file type: find_motifs_params</p>
  * <pre>
- * Genome is a KBase genome
- * Featureset is a KBase featureset
- * Promoter_length is the length of promoter requested for all genes
+ * SS_ref - optional, used for exact genome locations if possible
  * </pre>
  * 
  */
@@ -26,7 +24,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "fastapath",
     "motif_min_length",
-    "motif_max_length"
+    "motif_max_length",
+    "SS_ref",
+    "obj_name"
 })
 public class FindMotifsParams {
 
@@ -38,6 +38,10 @@ public class FindMotifsParams {
     private Long motifMinLength;
     @JsonProperty("motif_max_length")
     private Long motifMaxLength;
+    @JsonProperty("SS_ref")
+    private String SSRef;
+    @JsonProperty("obj_name")
+    private String objName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -100,6 +104,36 @@ public class FindMotifsParams {
         return this;
     }
 
+    @JsonProperty("SS_ref")
+    public String getSSRef() {
+        return SSRef;
+    }
+
+    @JsonProperty("SS_ref")
+    public void setSSRef(String SSRef) {
+        this.SSRef = SSRef;
+    }
+
+    public FindMotifsParams withSSRef(String SSRef) {
+        this.SSRef = SSRef;
+        return this;
+    }
+
+    @JsonProperty("obj_name")
+    public String getObjName() {
+        return objName;
+    }
+
+    @JsonProperty("obj_name")
+    public void setObjName(String objName) {
+        this.objName = objName;
+    }
+
+    public FindMotifsParams withObjName(String objName) {
+        this.objName = objName;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -112,7 +146,7 @@ public class FindMotifsParams {
 
     @Override
     public String toString() {
-        return ((((((((((("FindMotifsParams"+" [workspaceName=")+ workspaceName)+", fastapath=")+ fastapath)+", motifMinLength=")+ motifMinLength)+", motifMaxLength=")+ motifMaxLength)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((("FindMotifsParams"+" [workspaceName=")+ workspaceName)+", fastapath=")+ fastapath)+", motifMinLength=")+ motifMinLength)+", motifMaxLength=")+ motifMaxLength)+", SSRef=")+ SSRef)+", objName=")+ objName)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
