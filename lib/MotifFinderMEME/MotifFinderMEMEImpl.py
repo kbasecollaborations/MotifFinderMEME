@@ -267,7 +267,7 @@ class MotifFinderMEME:
         get_objects_params = {'object_refs' : [params['SequenceSetRef']]}
 
         SeqSet = dfu.get_objects(get_objects_params)['data'][0]['data']
-        print(SeqSet)
+        #print(SeqSet)
         outFile = open(params['fasta_outpath'],'w')
         for s in SeqSet['sequences']:
             sname = '>' + s['sequence_id'] + '\n'
