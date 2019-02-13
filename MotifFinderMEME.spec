@@ -22,6 +22,7 @@ module MotifFinderMEME {
         int motif_max_length;
         string SS_ref;
         string obj_name;
+        int background;
       } find_motifs_params;
 
       typedef structure {

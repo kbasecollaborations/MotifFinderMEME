@@ -82,7 +82,7 @@ class MotifFinderMEME:
         #promoterFastaFilePath = self.get_promoter_for_gene(ctx,params)[0]
         promoterFastaFilePath = params['fastapath']
 
-        MEMEMotifCommand = MEU.build_meme_command(promoterFastaFilePath,motMin,motMax)
+        MEMEMotifCommand = MEU.build_meme_command(promoterFastaFilePath,motMin,motMax,params['background'])
         MEU.run_meme_command(MEMEMotifCommand)
         meme_out_path = '/kb/module/work/tmp/meme_out/meme.txt'
         meme_params = {'ws_name' : params['workspace_name'], 'path' : meme_out_path,'obj_name' : params['obj_name']}
@@ -392,6 +392,10 @@ class MotifFinderMEME:
 
         #RemoveRepeats(fastapath,newfastapath)
         findmotifsparams= {'workspace_name' : params['workspace_name'],'fastapath':fastapath,'motif_min_length':params['motif_min_length'],'motif_max_length':params['motif_max_length'],'SS_ref':params['SS_ref'],'obj_name':params['obj_name']}
+        if params['background_group']['background'] == 1:
+            findmotifsparams['background'] = 1
+        else:
+            findmotifsparams['background'] = 0
 
         output = self.find_motifs(ctx,findmotifsparams)[0]
         #END DiscoverMotifsFromSequenceSet

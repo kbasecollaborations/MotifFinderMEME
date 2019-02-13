@@ -4,9 +4,11 @@ import json
 import subprocess
 
 #build the command to run meme, use some default flags
-def build_meme_command(inputFilePath,min,max):
+def build_meme_command(inputFilePath,min,max,background):
     outputFlag = ' -o /kb/module/work/tmp/meme_out -revcomp -dna -nmotifs 10 -minw ' + str(min)+ ' -maxw ' + str(max)
     #no cache
+    if background == 1:
+        outputFlag += ' -bfile /kb/module/work/tmp/background.txt'
     #outputFlag = ' -o ./tmp/meme_out -revcomp -dna'
     command = '/kb/deployment/bin/meme/bin/meme '  + inputFilePath + outputFlag
     #command = 'meme '  + inputFilePath + outputFlag
