@@ -377,15 +377,13 @@ class MotifFinderMEME:
         fastapath = '/kb/module/work/tmp/tmpSeqSet.fa'
         newfastapath = '/kb/module/work/tmp/SeqSet.fa'
         fastapath = newfastapath
-
-        exit(params)
-
+        
         FastaParams = {
             'workspace_name' : params['workspace_name'],
             'SequenceSetRef' : params['SS_ref'],
             'fasta_outpath' : fastapath,
-            'background': params['background_group']['background'],
-            'mask_repeats': params['mask_repeats']
+            # 'background': params['background_group']['background'],
+            # 'mask_repeats': params['mask_repeats']
         }
         if params['background_group']['background'] == 1:
             FastaParams['genome_ref'] = params['background_group']['genome_ref']
