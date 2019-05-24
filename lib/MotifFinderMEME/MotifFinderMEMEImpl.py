@@ -7,11 +7,7 @@ from SequenceSetUtils.SequenceSetUtilsClient import SequenceSetUtils
 from MotifUtils.MotifUtilsClient import MotifUtils
 from datetime import datetime
 import uuid
-import MotifFinderMEME.Utils.MotifSetUtil as MSU
 import MotifFinderMEME.Utils.MemeUtil as MEU
-from MotifFinderMEME.Utils.makeReportFromMotifSet import buildReportFromMotifSet
-#from identify_promoter.Utils.ParsePromFile import makePromHTMLReports
-import subprocess
 from biokbase.workspace.client import Workspace
 from MotifFinderMEME.Utils.MakeNewReport import MakeReport
 from MotifFinderMEME.Utils.FastaUtils import RemoveRepeats
@@ -314,7 +310,9 @@ class MotifFinderMEME:
         SSU = SequenceSetUtils(self.callback_url)
 
         BuildParams = {'ws_name' : params['workspace_name'], 'FeatureSet_ref' : params['featureSet_ref'], 'genome_ref' : params['genome_ref'], 'upstream_length' : params['promoter_length']}
+
         SSret =  SSU.buildFromFeatureSet(BuildParams)
+
         SSref = SSret['SequenceSet_ref']
         fastapath = '/kb/module/work/tmp/tmpSeqSet.fa'
         newfastapath = '/kb/module/work/tmp/SeqSet.fa'
@@ -379,7 +377,13 @@ class MotifFinderMEME:
         fastapath = '/kb/module/work/tmp/tmpSeqSet.fa'
         newfastapath = '/kb/module/work/tmp/SeqSet.fa'
         fastapath = newfastapath
-        FastaParams = {'workspace_name' : params['workspace_name'] , 'SequenceSetRef' : params['SS_ref'] , 'fasta_outpath' : fastapath, 'background':params['background_group']['background'],'mask_repeats':params['mask_repeats']}
+        FastaParams = {
+            'workspace_name' : params['workspace_name'],
+            'SequenceSetRef' : params['SS_ref'],
+            'fasta_outpath' : fastapath,
+            'background': params['background_group']['background'],
+            'mask_repeats': params['mask_repeats']
+        }
         if params['background_group']['background'] == 1:
             FastaParams['genome_ref'] = params['background_group']['genome_ref']
         else:
