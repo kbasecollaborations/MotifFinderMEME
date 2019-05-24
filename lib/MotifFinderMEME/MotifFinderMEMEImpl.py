@@ -378,6 +378,9 @@ class MotifFinderMEME:
         newfastapath = '/kb/module/work/tmp/SeqSet.fa'
         fastapath = newfastapath
 
+        if params['background_group'] == None:
+            params['background_group'] = {}
+
         if params['background_group']['background'] == None:
             params['background_group']['background'] = 0
 
