@@ -379,10 +379,7 @@ class MotifFinderMEME:
         fastapath = newfastapath
 
         if params['background_group'] == None:
-            params['background_group'] = {}
-
-        if params['background_group']['background'] == None:
-            params['background_group']['background'] = 0
+            params['background_group'] = {'background': 0}
 
         FastaParams = {
             'workspace_name' : params['workspace_name'],
