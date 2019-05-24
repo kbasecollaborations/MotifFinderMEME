@@ -377,6 +377,9 @@ class MotifFinderMEME:
         fastapath = '/kb/module/work/tmp/tmpSeqSet.fa'
         newfastapath = '/kb/module/work/tmp/SeqSet.fa'
         fastapath = newfastapath
+
+        exit(params)
+
         FastaParams = {
             'workspace_name' : params['workspace_name'],
             'SequenceSetRef' : params['SS_ref'],
@@ -392,6 +395,7 @@ class MotifFinderMEME:
             FastaParams['TESTFLAG'] = params['TESTFLAG']
         else:
             FastaParams['TESTFLAG'] = 0
+
         output = self.BuildFastaFromSequenceSet(ctx,FastaParams)
 
         #RemoveRepeats(fastapath,newfastapath)
