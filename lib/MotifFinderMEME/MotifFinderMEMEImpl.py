@@ -89,7 +89,7 @@ class MotifFinderMEME:
             get_ss_params = {'object_refs' : [params['SS_ref']]}
             SS = dfu.get_objects(get_ss_params)['data'][0]['data']
             for s in SS['sequences']:
-                if s['source'] is not None:
+                if s['source']['assembly_id'] != '' and s['source']['location'] != []:
                     locDict['sequence_id'] = {'contig' : s['source']['location'][0][0],'start':str(s['source']['location'][0][1])}
         if len(locDict.keys()) > 0:
             meme_params['absolute_locations'] = locDict
