@@ -98,7 +98,8 @@ class MotifFinderMEMETest(unittest.TestCase):
             'promoter_length':100,
             'motif_min_length':8,
             'motif_max_length':16,
-            'background_group': {'background' : 1, 'genome_ref' : '22748/2/1'},
+            #'background_group': {'background' : 1, 'genome_ref' : '22748/2/1'},
+            'background_group': {'background' : 0, 'genome_ref' : '22748/2/1'},
             'TESTFLAG' : 1,
             'mask_repeats' : 1,
             'obj_name' : 'MEMETESTOBJ'

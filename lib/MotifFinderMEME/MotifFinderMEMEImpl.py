@@ -82,6 +82,7 @@ class MotifFinderMEME:
         MEU.run_meme_command(MEMEMotifCommand)
         meme_out_path = '/kb/module/work/tmp/meme_out/meme.txt'
         meme_params = {'ws_name' : params['workspace_name'], 'path' : meme_out_path,'obj_name' : params['obj_name']}
+
         MOU = MotifUtils(self.callback_url)
         dfu = DataFileUtil(self.callback_url)
         locDict = {}
@@ -95,7 +96,9 @@ class MotifFinderMEME:
             meme_params['absolute_locations'] = locDict
         meme_params['min_len'] = motMin
         meme_params['max_len'] = motMax
+
         obj_ref = MOU.UploadFromMEME(meme_params)['obj_ref']
+
         #memeMotifList = MEU.parse_meme_output()
 
         #HERE:
