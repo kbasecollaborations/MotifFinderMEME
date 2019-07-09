@@ -98,7 +98,7 @@ class MotifFinderMEME:
         meme_params['max_len'] = motMax
 
         obj_ref = MOU.UploadFromMEME(meme_params)['obj_ref']
-
+        MEU.write_obj_ref("/kb/module/work/tmp/meme_out", obj_ref)
 
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         timestamp = str(timestamp)

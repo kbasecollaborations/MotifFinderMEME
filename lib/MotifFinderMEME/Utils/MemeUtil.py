@@ -23,6 +23,11 @@ class MemeUtil:
           print('************MEME ERROR************\n')
           print(e.returncode)
 
+  def write_obj_ref(self, path, obj_ref):
+      file = open(path+"/meme_obj.txt","w")
+      file.write(obj_ref)
+      file.close()
+
   def parse_meme_output(self):
       outputDir = '/kb/module/work/tmp/meme_out'
       outputFile = outputDir + '/meme.txt'
