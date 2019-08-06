@@ -8,12 +8,7 @@ from installed_clients.MotifUtilsClient import MotifUtils
 from datetime import datetime
 import uuid
 from MotifFinderMEME.Utils.MemeUtil import MemeUtil
-from biokbase.workspace.client import Workspace
-from MotifFinderMEME.Utils.GenerateReport import GenerateReport  
-from MotifFinderMEME.Utils.FastaUtils import FastaUtils
-from MotifFinderMEME.Utils.BackgroundUtils import BackgroundUtils
-from installed_clients.AssemblyUtilClient import AssemblyUtil
-from MotifFinderMEME.Utils.TestUtils import TestUtils
+from MotifFinderMEME.Utils.GenerateReport import GenerateReport
 #END_HEADER
 
 
