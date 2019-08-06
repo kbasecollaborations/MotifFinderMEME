@@ -39,14 +39,100 @@ class MotifUtils(object):
             async_job_check_time_scale_percent=async_job_check_time_scale_percent,
             async_job_check_max_time_ms=async_job_check_max_time_ms)
 
+    def uploadMotifSet(self, params, context=None):
+        """
+        :param params: instance of type "uploadParams" -> structure:
+           parameter "format" of type "motif_format" (Input/Output motif
+           format @range("MEME", "JASPAR", "GIBBS", "HOMER", "TRANSFAC",
+           "MFMD")), parameter "path" of String, parameter "obj_name" of
+           String, parameter "ws_name" of type "workspace_name" (workspace
+           name of the object)
+        :returns: instance of type "UIOutParams" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String,
+           parameter "motif_obj" of type "MotifSetRef" (Ref to a sequence set
+           @id ws KBaseGeneRegulation.MotifSet)
+        """
+        return self._client.run_job('MotifUtils.uploadMotifSet',
+                                    [params], self._service_ver, context)
+
+    def parseMotifSet(self, params, context=None):
+        """
+        :param params: instance of type "parseParams" -> structure: parameter
+           "format" of type "motif_format" (Input/Output motif format
+           @range("MEME", "JASPAR", "GIBBS", "HOMER", "TRANSFAC", "MFMD")),
+           parameter "file" of type "File" -> structure: parameter "path" of
+           String, parameter "shock_id" of String, parameter "ftp_url" of
+           String, parameter "ws_name" of type "workspace_name" (workspace
+           name of the object), parameter "genome" of type "GenomeRef" (Ref
+           to a sequence set @id ws KBaseGenomes.Genome)
+        :returns: instance of type "MotifSet" (Condition - description of
+           conditionused to select sequences SequenceSet_ref - reference to
+           sequenceset used to find motifs Motifs - list of motifs Alphabet -
+           list of letters used in sequences, e.g. ['A','C','G','T'] for DNA
+           Background - background frequencies of letters in alphabet) ->
+           structure: parameter "Condition" of String, parameter
+           "SequenceSet_ref" of String, parameter "Motifs" of list of type
+           "Motif" (one of PWM or PFM must be included PWM - position weight
+           matrix of motif PFM - position frequency matrix of motif
+           Iupac_signature - motif represented in Iupac notation
+           Motif_Locations - list of locations where motif has been found) ->
+           structure: parameter "PWM" of mapping from String to list of
+           Double, parameter "PFM" of mapping from String to list of Double,
+           parameter "Iupac_sequence" of String, parameter "Motif_Locations"
+           of list of type "Motif_Location" (sequence_id - id of sequence
+           motif was found in associated sequenceset start - start of motif
+           in the sequence end - end of motif in the sequence orientation -
+           +/- sequence - actual motif sequence, might not match exactly to
+           IUPAC) -> structure: parameter "sequence_id" of String, parameter
+           "start" of Long, parameter "end" of Long, parameter "orientation"
+           of String, parameter "sequence" of String, parameter "Alphabet" of
+           list of String, parameter "Background" of mapping from String to
+           Double
+        """
+        return self._client.run_job('MotifUtils.parseMotifSet',
+                                    [params], self._service_ver, context)
+
+    def saveMotifSet(self, params, context=None):
+        """
+        :param params: instance of type "saveParams" -> structure: parameter
+           "format" of type "motif_format" (Input/Output motif format
+           @range("MEME", "JASPAR", "GIBBS", "HOMER", "TRANSFAC", "MFMD")),
+           parameter "file" of type "File" -> structure: parameter "path" of
+           String, parameter "shock_id" of String, parameter "ftp_url" of
+           String, parameter "obj_name" of String, parameter "ws_name" of
+           type "workspace_name" (workspace name of the object)
+        :returns: instance of type "MotifSetRef" (Ref to a sequence set @id
+           ws KBaseGeneRegulation.MotifSet)
+        """
+        return self._client.run_job('MotifUtils.saveMotifSet',
+                                    [params], self._service_ver, context)
+
+    def downloadMotifSet(self, params, context=None):
+        """
+        :param params: instance of type "downloadParams" -> structure:
+           parameter "format" of type "motif_format" (Input/Output motif
+           format @range("MEME", "JASPAR", "GIBBS", "HOMER", "TRANSFAC",
+           "MFMD")), parameter "motifset" of type "MotifSetRef" (Ref to a
+           sequence set @id ws KBaseGeneRegulation.MotifSet), parameter
+           "ws_name" of type "workspace_name" (workspace name of the object)
+        :returns: instance of type "UIOutParams" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String,
+           parameter "motif_obj" of type "MotifSetRef" (Ref to a sequence set
+           @id ws KBaseGeneRegulation.MotifSet)
+        """
+        return self._client.run_job('MotifUtils.downloadMotifSet',
+                                    [params], self._service_ver, context)
+
     def UploadFromGibbs(self, params, context=None):
         """
-        :param params: instance of type "UploadMEMEInParams" (optional -
-           absolute_locations) -> structure: parameter "path" of String,
-           parameter "ws_name" of String, parameter "obj_name" of String,
-           parameter "absolute_locations" of mapping from String to String
-        :returns: instance of type "UploadOutput" -> structure: parameter
-           "obj_ref" of String
+        :param params: instance of type "UploadMEMEInParams" (Backwards
+           compatability) -> structure: parameter "path" of String, parameter
+           "ws_name" of String, parameter "obj_name" of String, parameter
+           "absolute_locations" of mapping from String to String
+        :returns: instance of type "UIOutParams" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String,
+           parameter "motif_obj" of type "MotifSetRef" (Ref to a sequence set
+           @id ws KBaseGeneRegulation.MotifSet)
         """
         return self._client.run_job('MotifUtils.UploadFromGibbs',
                                     [params], self._service_ver, context)
@@ -56,8 +142,10 @@ class MotifUtils(object):
         :param params: instance of type "UploadHomerInParams" -> structure:
            parameter "path" of String, parameter "ws_name" of String,
            parameter "obj_name" of String, parameter "location_path" of String
-        :returns: instance of type "UploadOutput" -> structure: parameter
-           "obj_ref" of String
+        :returns: instance of type "UIOutParams" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String,
+           parameter "motif_obj" of type "MotifSetRef" (Ref to a sequence set
+           @id ws KBaseGeneRegulation.MotifSet)
         """
         return self._client.run_job('MotifUtils.UploadFromHomer',
                                     [params], self._service_ver, context)
@@ -67,56 +155,12 @@ class MotifUtils(object):
         :param params: instance of type "UploadGibbsInParams" -> structure:
            parameter "path" of String, parameter "ws_name" of String,
            parameter "obj_name" of String
-        :returns: instance of type "UploadOutput" -> structure: parameter
-           "obj_ref" of String
+        :returns: instance of type "UIOutParams" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String,
+           parameter "motif_obj" of type "MotifSetRef" (Ref to a sequence set
+           @id ws KBaseGeneRegulation.MotifSet)
         """
         return self._client.run_job('MotifUtils.UploadFromMEME',
-                                    [params], self._service_ver, context)
-
-    def UploadFromJASPAR(self, params, context=None):
-        """
-        :param params: instance of type "UploadJASPARInParams" -> structure:
-           parameter "path" of String, parameter "ws_name" of String,
-           parameter "obj_name" of String
-        :returns: instance of type "UploadOutput" -> structure: parameter
-           "obj_ref" of String
-        """
-        return self._client.run_job('MotifUtils.UploadFromJASPAR',
-                                    [params], self._service_ver, context)
-
-    def UploadFromTRANSFAC(self, params, context=None):
-        """
-        :param params: instance of type "UploadTRANSFACInParams" ->
-           structure: parameter "path" of String, parameter "ws_name" of
-           String, parameter "obj_name" of String
-        :returns: instance of type "UploadOutput" -> structure: parameter
-           "obj_ref" of String
-        """
-        return self._client.run_job('MotifUtils.UploadFromTRANSFAC',
-                                    [params], self._service_ver, context)
-
-    def DownloadMotifSet(self, params, context=None):
-        """
-        :param params: instance of type "DownloadParams" -> structure:
-           parameter "ws_name" of String, parameter "source_ref" of String,
-           parameter "format" of String, parameter "outname" of String
-        :returns: instance of type "DownloadOutput" -> structure: parameter
-           "destination_path" of String
-        """
-        return self._client.run_job('MotifUtils.DownloadMotifSet',
-                                    [params], self._service_ver, context)
-
-    def importFromNarrative(self, params, context=None):
-        """
-        :param params: instance of type "ImportNarrativeInParams" ->
-           structure: parameter "ws_name" of String, parameter "staging_path"
-           of String, parameter "local_path" of String, parameter "shock_id"
-           of String, parameter "format" of String, parameter "obj_name" of
-           String
-        :returns: instance of type "ImportNarrativeOutParams" -> structure:
-           parameter "obj_ref" of String
-        """
-        return self._client.run_job('MotifUtils.importFromNarrative',
                                     [params], self._service_ver, context)
 
     def status(self, context=None):

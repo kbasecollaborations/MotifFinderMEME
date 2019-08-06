@@ -90,12 +90,12 @@ class MotifFinderMEMETest(unittest.TestCase):
 
 
         params = {
-            'workspace_name': 'man4ish_gupta:narrative_1559788829014',
-            'SS_ref' : '29476/5/1',
+            'workspace_name': 'rmr:narrative_1558461244202',
+            'SS_ref' : '28598/21/1',
             'promoter_length':100,
             'motif_min_length':8,
             'motif_max_length':16,
-            'background_group': {'background' : 1, 'genome_ref' : '29476/2/1'},
+            'background_group': {'background' : 1, 'genome_ref' : '28598/18/1'},
             'mask_repeats' : 1,
             'obj_name' : 'MEMETESTOBJ'
         }
