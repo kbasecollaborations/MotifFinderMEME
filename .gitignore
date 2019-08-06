@@ -1,3 +1,16 @@
 test_local
 sdk.cfg
 lib/MotifFinderMEME/MotifFinderMEMEImpl.py.bak*
+.DS_Store
+.idea
+Thumbs.db
+__pycache__/*
+__pycache__/
+__pycache__*
+__pycache__
+*.pyc
+*.pyo
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
