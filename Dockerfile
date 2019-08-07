@@ -6,7 +6,13 @@ MAINTAINER KBase Developer
 # install line here, a git checkout to download code, or run any other
 # installation scripts.
 
+RUN echo Updating packages
+
 RUN apt-get update
+
+# RUN apt-get install -y netselect-apt
+# RUN rm /etc/apt/sources.list
+# RUN netselect-apt -o /etc/apt/sources.list
 
 RUN apt-get install -y zlib1g-dev && \
     apt-get install -y curl && \
